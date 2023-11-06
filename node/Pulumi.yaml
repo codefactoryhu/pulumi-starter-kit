@@ -1,0 +1,3 @@
+name: aws-starter-kit
+runtime: nodejs
+description: A starter kit for AWS with basic features.
