@@ -1,0 +1,12 @@
+{
+    "name": "aws-starter-kit",
+    "version": "1.0.0",
+    "main": "index.ts",
+    "devDependencies": {
+        "@types/node": "^16"
+    },
+    "dependencies": {
+        "@pulumi/pulumi": "^3.0.0",
+        "@pulumi/aws": "^6.7.0"
+    }
+}
