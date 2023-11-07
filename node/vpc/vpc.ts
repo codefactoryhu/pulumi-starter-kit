@@ -7,7 +7,7 @@ import {
 } from '../env'
 
 export function createVpc(): aws.ec2.Vpc {
-    const vpc = new aws.ec2.Vpc(vpcVariables.name, {
+    const vpc = new aws.ec2.Vpc(vpcVariables.tags.Name, {
         cidrBlock: vpcVariables.cidrBlock,
         instanceTenancy: vpcVariables.instanceTenancy,
         tags: vpcVariables.tags,
@@ -17,7 +17,7 @@ export function createVpc(): aws.ec2.Vpc {
 
 export function createPublicSubnets(vpc: aws.ec2.Vpc) {
     for (let i = 0; i < publicSubnetVariables.availabilityZone.length; i++) {
-        const publicSubnet = new aws.ec2.Subnet(`${publicSubnetVariables.name}-${i + 1}`, {
+        const publicSubnet = new aws.ec2.Subnet(`${publicSubnetVariables.tags.Name}-${i + 1}`, {
             vpcId: vpc.id,
             availabilityZone: publicSubnetVariables.availabilityZone[i],
             cidrBlock: publicSubnetVariables.cidrBlock[i],
@@ -28,7 +28,7 @@ export function createPublicSubnets(vpc: aws.ec2.Vpc) {
 
 export function createPrivateSubnets(vpc: aws.ec2.Vpc) {
     for (let i = 0; i < privateSubnetVariables.availabilityZone.length; i++) {
-        const publicSubnet = new aws.ec2.Subnet(`${privateSubnetVariables.name}-${i + 1}`, {
+        const publicSubnet = new aws.ec2.Subnet(`${privateSubnetVariables.tags.Name}-${i + 1}`, {
             vpcId: vpc.id,
             availabilityZone: privateSubnetVariables.availabilityZone[i],
             cidrBlock: privateSubnetVariables.cidrBlock[i],
@@ -38,7 +38,7 @@ export function createPrivateSubnets(vpc: aws.ec2.Vpc) {
 }
 
 export function createInternetGateway(vpc: aws.ec2.Vpc) {
-    const igw = new aws.ec2.InternetGateway(`${internetGatewayVariables.name}`, {
+    const igw = new aws.ec2.InternetGateway(`${internetGatewayVariables.tags.Name}`, {
         vpcId: vpc.id,
         tags: internetGatewayVariables.tags,
     });
