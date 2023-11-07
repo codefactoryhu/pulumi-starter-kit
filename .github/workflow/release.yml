@@ -1,0 +1,28 @@
+name: Semantic release
+on:
+  push:
+    branches:
+      - 'main'
+
+jobs:
+    semantic-release:
+        runs-on: ubuntu-22.04
+        steps:
+            - name: Checkout
+              uses: actions/checkout@v4
+              with:
+                fetch-depth: 0
+                token: ${{ secrets.PAT_TOKEN }}
+            - name: Set up Node
+              uses: actions/setup-node@v3
+              with:
+                node-version: 18
+            - name: Set up Semantic Release
+              run: |
+                npm install -g semantic-release @semantic-release/gitlab-config @semantic-release/gitlab @semantic-release/git @semantic-release/changelog @semantic-release/exec conventional-commits-parser conventional-changelog-conventionalcommits
+                curl -sSLo install.sh https://install.hclq.sh
+                sh install.sh
+            - name: Create version
+              run: npx semantic-release
+              env:
+                GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
