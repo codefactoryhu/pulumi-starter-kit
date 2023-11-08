@@ -30,9 +30,10 @@ export function createVpc(): aws.ec2.Vpc {
 export function createPublicSubnets(vpc: aws.ec2.Vpc) {
     for (let i = 0; i < availabilityZone.length; i++) {
         const publicSubnet = new aws.ec2.Subnet(`${pulumiPublicSubnet.name}-${i + 1}`, {
-            vpcId:              vpc.id,
-            availabilityZone:   availabilityZone[i],
-            cidrBlock:          pulumiPublicSubnet.cidr[i],
+            vpcId:                  vpc.id,
+            availabilityZone:       availabilityZone[i],
+            cidrBlock:              pulumiPublicSubnet.cidr[i],
+            mapPublicIpOnLaunch:    pulumiPublicSubnet.mapPublicIpOnLaunch,
             tags: {"Name": pulumiPublicSubnet.name, "Project": project},
         });
     }
@@ -41,9 +42,10 @@ export function createPublicSubnets(vpc: aws.ec2.Vpc) {
 export function createPrivateSubnets(vpc: aws.ec2.Vpc) {
     for (let i = 0; i < availabilityZone.length; i++) {
         const publicSubnet = new aws.ec2.Subnet(`${pulumiPrivateSubnet.name}-${i + 1}`, {
-            vpcId:              vpc.id,
-            availabilityZone:   availabilityZone[i],
-            cidrBlock:          pulumiPrivateSubnet.cidr[i],
+            vpcId:                  vpc.id,
+            availabilityZone:       availabilityZone[i],
+            cidrBlock:              pulumiPrivateSubnet.cidr[i],
+            mapPublicIpOnLaunch:    pulumiPublicSubnet.mapPublicIpOnLaunch,
             tags: {"Name": pulumiPrivateSubnet.name, "Project": project},
         });
     }
