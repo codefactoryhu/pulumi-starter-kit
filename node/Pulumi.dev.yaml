@@ -19,6 +19,7 @@ config:
       - 10.0.1.0/24
       - 10.0.2.0/24
       - 10.0.3.0/24
+    mapPublicIpOnLaunch: true
 
   aws-starter-kit:privateSubnet:
     name: pulumi-private-subnet
@@ -26,6 +27,7 @@ config:
       - 10.0.10.0/24
       - 10.0.11.0/24
       - 10.0.12.0/24
+    mapPublicIpOnLaunch: false
 
   # Internet Gateway
   aws-starter-kit:internetGateway:

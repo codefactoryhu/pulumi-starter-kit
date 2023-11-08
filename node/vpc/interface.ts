@@ -7,6 +7,7 @@ interface vpcType {
 interface subnetType {
     name: string;
     cidr: string[];
+    mapPublicIpOnLaunch: boolean;
 }
 
 interface internetGatewayType {
