@@ -32,3 +32,9 @@ config:
   # Internet Gateway
   aws-starter-kit:internetGateway:
     name: pulumi-internet-gateway
+
+  # Route Table
+  aws-starter-kit:routeTable:
+    name: pulumi-route-table
+    cidr: 0.0.0.0/0
+    associationName: public-subnet-association

@@ -14,9 +14,16 @@ interface internetGatewayType {
     name: string;
 }
 
+interface routeTableType {
+    name: string;
+    cidr: string;
+    associationName: string;
+}
+
 export
 {
     vpcType,
     subnetType,
-    internetGatewayType
+    internetGatewayType,
+    routeTableType
 };
