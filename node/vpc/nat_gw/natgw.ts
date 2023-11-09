@@ -11,9 +11,9 @@ const pulumiNatGateway  = config.requireObject<natGatewayType>("natGateway");
 export function createNatGateway(elasticIp:aws.ec2.Eip):aws.ec2.NatGateway {
     const natGw = new aws.ec2.NatGateway(pulumiNatGateway.name,{
         subnetId:           createdPublicSubnets[0].id,
-        allocationId:       elasticIp.id,
+        allocationId:       elasticIp.allocationId,
         connectivityType:   pulumiNatGateway.connectivityType,
         tags: {"Name": pulumiNatGateway.name, "Project": project},
-    }, {dependsOn: [ createdElasticIps[0] ]});
+    }, {dependsOn: [ createdElasticIps[0], createdPublicSubnets[0] ]});
     return natGw;
 }

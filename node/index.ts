@@ -4,8 +4,8 @@ import { createVpc }                                from './vpc/vpc/vpc';
 import { createPublicSubnet, createPrivateSubnet }  from './vpc/subnets/subnet';
 import { createInternetGateway }                    from './vpc/igw/igw';
 import { createElasticIp }                          from './vpc/eip/eip';
-import { createRouteTable, associateRouteTable }    from './vpc/route_table/route-table';
 import { createNatGateway }                         from './vpc/nat_gw/natgw';
+import { createRouteTable, associateRouteTable }    from './vpc/route_table/route-table';
 
 export const createdPublicSubnets:aws.ec2.Subnet[] = [];
 
