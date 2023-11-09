@@ -1,13 +1,13 @@
-import * as pulumi from "@pulumi/pulumi";
-import * as aws from "@pulumi/aws";
-import { subnetType } from "../../interface";
+import * as pulumi              from "@pulumi/pulumi";
+import * as aws                 from "@pulumi/aws";
+import { subnetType }           from "../../interface";
 import { createdPublicSubnets } from "../../index";
 
-const config = new pulumi.Config();
-const project =                 config.require("project");
-const availabilityZone =        config.requireObject<string[]>("availabilityZone");
-const pulumiPublicSubnet =      config.requireObject<subnetType>("publicSubnet");
-const pulumiPrivateSubnet =     config.requireObject<subnetType>("privateSubnet");
+const config                = new pulumi.Config();
+const project               = config.require("project");
+const availabilityZone      = config.requireObject<string[]>("availabilityZone");
+const pulumiPublicSubnet    = config.requireObject<subnetType>("publicSubnet");
+const pulumiPrivateSubnet   = config.requireObject<subnetType>("privateSubnet");
 
 export function createPublicSubnet(vpc:aws.ec2.Vpc) {
     for (let i = 0; i < availabilityZone.length; i++) {

@@ -10,8 +10,17 @@ interface subnetType {
     mapPublicIpOnLaunch: boolean;
 }
 
+interface elasticIpType {
+    name: string;
+}
+
 interface internetGatewayType {
     name: string;
+}
+
+interface natGatewayType {
+    name: string;
+    connectivityType: string;
 }
 
 interface routeTableType {
@@ -24,6 +33,8 @@ export
 {
     vpcType,
     subnetType,
+    elasticIpType,
     internetGatewayType,
+    natGatewayType,
     routeTableType
 };
