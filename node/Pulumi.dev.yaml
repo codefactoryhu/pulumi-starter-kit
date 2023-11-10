@@ -41,8 +41,14 @@ config:
   aws-starter-kit:natGateway:
     name: pulumi-nat-gateway
 
-  # Route Table
-  aws-starter-kit:routeTable:
-    name: pulumi-route-table
+  # Public Route Table
+  aws-starter-kit:publicRouteTable:
+    name: pulumi-public-route-table
     cidr: 0.0.0.0/0
     associationName: public-subnet-association
+
+  # Private Route Table
+  aws-starter-kit:privateRouteTable:
+    name: pulumi-private-route-table
+    cidr: 0.0.0.0/0
+    associationName: private-subnet-association

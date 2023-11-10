@@ -1,13 +1,18 @@
 import * as pulumi              from "@pulumi/pulumi";
 import * as aws                 from "@pulumi/aws";
 import { subnetType }           from "../../interface";
-import { createdPublicSubnets } from "../../index";
 
 const config                = new pulumi.Config();
 const project               = config.require("project");
 const availabilityZone      = config.requireObject<string[]>("availabilityZone");
 const pulumiPublicSubnet    = config.requireObject<subnetType>("publicSubnet");
 const pulumiPrivateSubnet   = config.requireObject<subnetType>("privateSubnet");
+
+// Used by Internet Gateway
+export const createdPublicSubnets:aws.ec2.Subnet[] = [];
+
+// Used by Internet Gateway, NAT Gateway
+export const createdPrivateSubnets:aws.ec2.Subnet[] = [];
 
 export function createPublicSubnet(vpc:aws.ec2.Vpc) {
     for (let i = 0; i < availabilityZone.length; i++) {
@@ -17,7 +22,7 @@ export function createPublicSubnet(vpc:aws.ec2.Vpc) {
             cidrBlock:              pulumiPublicSubnet.cidr[i],
             mapPublicIpOnLaunch:    pulumiPublicSubnet.mapPublicIpOnLaunch,
             tags: {"Name": pulumiPublicSubnet.name, "Project": project},
-        });
+        }, {dependsOn: [ vpc ]});
         createdPublicSubnets.push(publicSubnet);
     }
 }
@@ -30,6 +35,7 @@ export function createPrivateSubnet(vpc:aws.ec2.Vpc) {
             cidrBlock:              pulumiPrivateSubnet.cidr[i],
             mapPublicIpOnLaunch:    pulumiPublicSubnet.mapPublicIpOnLaunch,
             tags: {"Name": pulumiPrivateSubnet.name, "Project": project},
-        });
+        }, {dependsOn: [ vpc ]});
+        createdPrivateSubnets.push(publicSubnet);
     }
 }

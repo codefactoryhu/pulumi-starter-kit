@@ -1,7 +1,7 @@
 import * as pulumi              from "@pulumi/pulumi";
 import * as aws                 from "@pulumi/aws";
 import { routeTableType }       from "../../interface";
-import { createdPublicSubnets } from "../../index";
+import { createdPublicSubnets } from "../subnets/subnet";
 
 const config            = new pulumi.Config();
 const project           = config.require("project");
