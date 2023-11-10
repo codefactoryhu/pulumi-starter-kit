@@ -3,7 +3,8 @@ import { createPublicSubnet, createPrivateSubnet }  from './vpc/subnets/subnet';
 import { createInternetGateway }                    from './vpc/igw/igw';
 import { createNatGateway }                         from './vpc/nat_gw/natgw';
 
-import { createdVpc }           from "./vpc/vpc/vpc";
+// Import variables
+import { createdVpc } from "./vpc/vpc/vpc";
 
 function createStack() {
     createVpc();

@@ -1,5 +1,7 @@
 import * as pulumi              from "@pulumi/pulumi";
 import * as aws                 from "@pulumi/aws";
+
+//Import interfaces
 import { natGatewayType }       from "../../interface";
 import { routeTableType }       from "../../interface";
 import { elasticIpType }        from "../../interface";
