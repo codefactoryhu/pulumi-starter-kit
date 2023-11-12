@@ -29,12 +29,26 @@ config:
       - 10.0.12.0/24
     mapPublicIpOnLaunch: false
 
+  # Elastic IP
+  aws-starter-kit:elasticIp:
+    name: pulumi-elastic-ip
+
   # Internet Gateway
   aws-starter-kit:internetGateway:
     name: pulumi-internet-gateway
 
-  # Route Table
-  aws-starter-kit:routeTable:
-    name: pulumi-route-table
+  # NAT Gateway
+  aws-starter-kit:natGateway:
+    name: pulumi-nat-gateway
+
+  # Public Route Table
+  aws-starter-kit:publicRouteTable:
+    name: pulumi-public-route-table
     cidr: 0.0.0.0/0
     associationName: public-subnet-association
+
+  # Private Route Table
+  aws-starter-kit:privateRouteTable:
+    name: pulumi-private-route-table
+    cidr: 0.0.0.0/0
+    associationName: private-subnet-association
