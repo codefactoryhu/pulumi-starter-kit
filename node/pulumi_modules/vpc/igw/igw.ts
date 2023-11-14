@@ -2,8 +2,10 @@ import * as pulumi              from "@pulumi/pulumi";
 import * as aws                 from "@pulumi/aws";
 
 // Import interfaces
-import { internetGatewayType }  from "../../interface";
-import { routeTableType }       from "../../interface";
+import {
+    internetGatewayType,
+    routeTableType
+} from "../vpc-interface";
 
 //Import variables
 import { createdPublicSubnets } from "../subnets/subnet";

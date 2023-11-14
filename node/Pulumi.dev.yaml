@@ -52,3 +52,18 @@ config:
     name: pulumi-private-route-table
     cidr: 0.0.0.0/0
     associationName: private-subnet-association
+
+  # KMS key
+  aws-starter-kit:kmsKey:
+    name: pulumi-kms-key
+    deletionWindowInDays: 10
+    description: KMS key for EKS
+    enableKeyRotation: false
+    isEnabled: true
+    keyUsage: ENCRYPT_DECRYPT
+    multiRegion: false
+
+  #KMS key alias
+  aws-starter-kit:kmsKeyAlias:
+    name: pulumi-alias
+    displayName: alias/pulumi-key
