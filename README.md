@@ -51,6 +51,9 @@ As this code will create resources in AWS you need to configure your AWS profile
 - Install AWS CLI: https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
 - Configure AWS profile: https://docs.aws.amazon.com/cli/latest/reference/configure/
 
+## Modifying resources
+To modify AWS resources to fit your needs (e.g. change CIDR values, availability zones, number of subnets, etc...) open the _Pulumi.dev.yaml_ file and modify the values there. This file contains the variables used by the code.
+
 ## Running Pulumi
 ### Create resources
 After your environment is configured:
