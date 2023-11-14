@@ -16,7 +16,7 @@ export const createdPublicSubnets:aws.ec2.Subnet[] = [];
 // Used by Internet Gateway, NAT Gateway
 export const createdPrivateSubnets:aws.ec2.Subnet[] = [];
 
-export function createPublicSubnet(vpc:aws.ec2.Vpc) {
+export function publicSubnet(vpc:aws.ec2.Vpc) {
     for (let i = 0; i < availabilityZone.length; i++) {
         const publicSubnet = new aws.ec2.Subnet(`${pulumiPublicSubnet.name}-${i + 1}`, {
             vpcId:                  vpc.id,
@@ -29,7 +29,7 @@ export function createPublicSubnet(vpc:aws.ec2.Vpc) {
     }
 }
 
-export function createPrivateSubnet(vpc:aws.ec2.Vpc) {
+export function privateSubnet(vpc:aws.ec2.Vpc) {
     for (let i = 0; i < availabilityZone.length; i++) {
         const publicSubnet = new aws.ec2.Subnet(`${pulumiPrivateSubnet.name}-${i + 1}`, {
             vpcId:                  vpc.id,

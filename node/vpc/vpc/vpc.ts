@@ -9,7 +9,7 @@ const pulumiVpc = config.requireObject<vpcType>("vpc");
 // Used by Subnets, Internet Gateway, NAT Gateway
 export const createdVpc:aws.ec2.Vpc[] = [];
 
-export function createVpc() {
+export function vpc() {
     const vpc = new aws.ec2.Vpc(pulumiVpc.name, {
         cidrBlock:          pulumiVpc.cidr,
         instanceTenancy:    pulumiVpc.instanceTenancy,

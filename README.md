@@ -13,12 +13,38 @@ Currently this code will create the following resources:
 ## How to set up environment
 
 ### Install requirements
+#### Pulumi
 To run this code successfully you need to install pulumi on your local machine.  
 Follow the instructions from Pulumi's website to do so:  
 https://www.pulumi.com/docs/install/  
+
+#### NPM, Node
   
-To install the latest NodeJs use this link:  
-https://nodejs.org/en/download/package-manager
+To install the latest the latest npm and Node version:  
+https://docs.npmjs.com/downloading-and-installing-node-js-and-npm
+  
+In the _package.json_ file you can define the entry point of Pulumi (index.ts by default), the desired Node version and the required dependency packages.  
+You have to install **@pulumi/pulumi** and **@pulumi/aws** packages for this stack.  
+  
+For installation enter the directory of _package.json_ and run:  
+**npm install**
+
+  
+```
+{
+    "name": "aws-starter-kit",
+    "version": "1.0.0",
+    "main": "index.ts",
+    "devDependencies": {
+        "@types/node": "^16"
+    },
+    "dependencies": {
+        "@pulumi/pulumi": "^3.0.0",
+        "@pulumi/aws": "^6.7.0"
+    }
+}
+
+```
 
 ### Set up AWS CLI
 As this code will create resources in AWS you need to configure your AWS profile credendials. Pulumi will use these credentials by default.

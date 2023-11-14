@@ -16,7 +16,7 @@ const pulumiRouteTable      = config.requireObject<routeTableType>("publicRouteT
 // Used by Eip
 export const createdInternetGateways:aws.ec2.InternetGateway[] = [];
 
-export function createInternetGateway(vpc:aws.ec2.Vpc) {
+export function internetGateway(vpc:aws.ec2.Vpc) {
     const igw = new aws.ec2.InternetGateway(pulumiInternetGateway.name, {
         vpcId:  vpc.id,
         tags: {"Name": pulumiInternetGateway.name, "Project": project},
