@@ -4,11 +4,14 @@
 This repository contains a Pulumi kit to create AWS resources written in TypeScript.  
 Currently this code will create the following resources:
 - VPC
-- 3 public subnets
-- 3 private subnets
-- Internet Gateway
-- NAT Gateway
-- Route tables  
+    - 3 public subnets
+    - 3 private subnets
+    - Internet Gateway
+    - NAT Gateway
+    - Route tables
+- KMS
+    - KMS key
+    - KMS key alias
 
 ## How to set up environment
 
