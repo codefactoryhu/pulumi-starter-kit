@@ -19,7 +19,7 @@ const pulumiNatGateway  = config.requireObject<natGatewayType>("natGateway");
 const pulumiRouteTable  = config.requireObject<routeTableType>("privateRouteTable");
 const pulumiElasticIp   = config.requireObject<elasticIpType>("elasticIp");
 
-export function createNatGateway(vpc:aws.ec2.Vpc) {
+export function natGateway(vpc:aws.ec2.Vpc) {
     const eip = new aws.ec2.Eip(pulumiElasticIp.name, {
         tags: {"Name": pulumiElasticIp.name, "Project": project},
     }, {dependsOn: [ createdInternetGateways[0] ]})

@@ -1,17 +1,17 @@
-import { createVpc }                                from './vpc/vpc/vpc';
-import { createPublicSubnet, createPrivateSubnet }  from './vpc/subnets/subnet';
-import { createInternetGateway }                    from './vpc/igw/igw';
-import { createNatGateway }                         from './vpc/nat_gw/natgw';
+import { vpc }                          from './vpc/vpc/vpc';
+import { publicSubnet, privateSubnet }  from './vpc/subnets/subnet';
+import { internetGateway }              from './vpc/igw/igw';
+import { natGateway }                   from './vpc/nat_gw/natgw';
 
 // Import variables
 import { createdVpc } from "./vpc/vpc/vpc";
 
 function createStack() {
-    createVpc();
-    createPublicSubnet(createdVpc[0]);
-    createPrivateSubnet(createdVpc[0]);
-    createInternetGateway(createdVpc[0]);
-    createNatGateway(createdVpc[0]);
+    vpc();
+    publicSubnet(createdVpc[0]);
+    privateSubnet(createdVpc[0]);
+    internetGateway(createdVpc[0]);
+    natGateway(createdVpc[0]);
 }
 
 createStack();
