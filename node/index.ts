@@ -1,9 +1,6 @@
-import { createVpc }    from './pulumi_modules/vpc/vpc-main';
-import { createKmsKey } from './pulumi_modules/kms/kms-main';
 
-function createStack() {
-    createVpc();
-    createKmsKey();
-}
+import { cluster } from './pulumi_modules/eks/eks';
 
-createStack();
+const pulumiCluster= cluster;
+
+export const config = pulumiCluster.kubeconfig;

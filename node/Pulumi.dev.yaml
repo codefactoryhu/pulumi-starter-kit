@@ -11,6 +11,7 @@ config:
     name: pulumi-vpc
     cidr: 10.0.0.0/16
     instanceTenancy: default
+    numberOfAvailabilityZones: 3
 
   # Subnets
   aws-starter-kit:publicSubnet:
