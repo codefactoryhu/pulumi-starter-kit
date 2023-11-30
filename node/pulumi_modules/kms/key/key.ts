@@ -1,13 +1,15 @@
 import * as pulumi  from '@pulumi/pulumi';
 import * as aws     from '@pulumi/aws';
 
-// Import interfaces
+// Import Interfaces
 import { kmsType, kmsAliasType } from '../kms-interface';
 
 const config                = new pulumi.Config();
 const project               = config.require("project");
 const pulumikmsKey          = config.requireObject<kmsType>("kmsKey");
 const pulumikmsKeyAlias     = config.requireObject<kmsAliasType>("kmsKeyAlias");
+
+export let kmsArn:pulumi.Output<string>;
 
 export function kms() {
     const kmsKey = new aws.kms.Key(pulumikmsKey.name, {
@@ -19,6 +21,7 @@ export function kms() {
         description:            pulumikmsKey.description,
         tags: {"Name": pulumikmsKey.name, "Project": project},
     })
+    kmsArn = kmsKey.arn;
     kmsAlias(kmsKey);
 };
 
