@@ -1,8 +1,11 @@
-import * as pulumi      from "@pulumi/pulumi";
-import * as aws         from "@pulumi/aws";
+import * as pulumi      from '@pulumi/pulumi';
+import * as aws         from '@pulumi/aws';
 
-// Import interfaces
-import { subnetType }   from "../vpc-interface";
+// Import Interfaces
+import { subnetType }   from '../vpc-interface';
+
+// Import Outputs
+import { createdVpc }   from '../vpc/vpc';
 
 const config                = new pulumi.Config();
 const project               = config.require("project");
@@ -11,33 +14,33 @@ const pulumiPublicSubnet    = config.requireObject<subnetType>("publicSubnet");
 const pulumiPrivateSubnet   = config.requireObject<subnetType>("privateSubnet");
 
 // Used by Internet Gateway
-export const createdPublicSubnets:aws.ec2.Subnet[] = [];
+export const publicSubnetIds:pulumi.Output<string>[] = [];
 
 // Used by Internet Gateway, NAT Gateway
-export const createdPrivateSubnets:aws.ec2.Subnet[] = [];
+export const privateSubnetIds:pulumi.Output<string>[] = [];
 
-export function publicSubnet(vpc:aws.ec2.Vpc) {
+export function publicSubnet() {
     for (let i = 0; i < availabilityZone.length; i++) {
         const publicSubnet = new aws.ec2.Subnet(`${pulumiPublicSubnet.name}-${i + 1}`, {
-            vpcId:                  vpc.id,
+            vpcId:                  createdVpc.id,
             availabilityZone:       availabilityZone[i],
             cidrBlock:              pulumiPublicSubnet.cidr[i],
             mapPublicIpOnLaunch:    pulumiPublicSubnet.mapPublicIpOnLaunch,
             tags: {"Name": pulumiPublicSubnet.name, "Project": project},
-        }, {dependsOn: [ vpc ]});
-        createdPublicSubnets.push(publicSubnet);
+        });
+        publicSubnetIds.push(publicSubnet.id);
     }
 }
 
-export function privateSubnet(vpc:aws.ec2.Vpc) {
+export function privateSubnet() {
     for (let i = 0; i < availabilityZone.length; i++) {
         const publicSubnet = new aws.ec2.Subnet(`${pulumiPrivateSubnet.name}-${i + 1}`, {
-            vpcId:                  vpc.id,
+            vpcId:                  createdVpc.id,
             availabilityZone:       availabilityZone[i],
             cidrBlock:              pulumiPrivateSubnet.cidr[i],
             mapPublicIpOnLaunch:    pulumiPublicSubnet.mapPublicIpOnLaunch,
             tags: {"Name": pulumiPrivateSubnet.name, "Project": project},
-        }, {dependsOn: [ vpc ]});
-        createdPrivateSubnets.push(publicSubnet);
+        });
+        privateSubnetIds.push(publicSubnet.id);
     }
 }
