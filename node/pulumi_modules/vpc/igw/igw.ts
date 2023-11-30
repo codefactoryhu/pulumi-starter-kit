@@ -1,14 +1,12 @@
-import * as pulumi              from "@pulumi/pulumi";
-import * as aws                 from "@pulumi/aws";
+import * as pulumi  from '@pulumi/pulumi';
+import * as aws     from '@pulumi/aws';
 
-// Import interfaces
-import {
-    internetGatewayType,
-    routeTableType
-} from "../vpc-interface";
+// Import Interfaces
+import { internetGatewayType, routeTableType } from '../vpc-interface';
 
-//Import variables
-import { createdPublicSubnets } from "../subnets/subnet";
+//Import Outputs
+import { createdVpc }       from '../vpc/vpc';
+import { publicSubnetIds }  from '../subnets/subnet';
 
 const config                = new pulumi.Config();
 const project               = config.require("project");
@@ -16,37 +14,37 @@ const pulumiInternetGateway = config.requireObject<internetGatewayType>("interne
 const pulumiRouteTable      = config.requireObject<routeTableType>("publicRouteTable");
 
 // Used by Eip
-export const createdInternetGateways:aws.ec2.InternetGateway[] = [];
+export let createdInternetGateway:aws.ec2.InternetGateway;
 
-export function internetGateway(vpc:aws.ec2.Vpc) {
+export function internetGateway() {
     const igw = new aws.ec2.InternetGateway(pulumiInternetGateway.name, {
-        vpcId:  vpc.id,
+        vpcId:  createdVpc.id,
         tags: {"Name": pulumiInternetGateway.name, "Project": project},
-    }, {dependsOn: [ vpc ]});
-    createdInternetGateways.push(igw);
-    publicRouteTable(vpc, igw);
+    });
+    createdInternetGateway = igw;
+    publicRouteTable();
 }
 
-function publicRouteTable(vpc:aws.ec2.Vpc, igw:aws.ec2.InternetGateway) {
+function publicRouteTable() {
     const routeTable = new aws.ec2.RouteTable(pulumiRouteTable.name, {
-        vpcId: vpc.id,
+        vpcId: createdVpc.id,
         routes:
         [
             {
                 cidrBlock: pulumiRouteTable.cidr,
-                gatewayId: igw.id,
+                gatewayId: createdInternetGateway.id,
             }
         ],
         tags: {"Name": pulumiRouteTable.name, "Project": project},
-    }, {dependsOn: [ igw ]})
+    })
     associateRouteTable(routeTable);
 }
 
 function associateRouteTable(routeTable:aws.ec2.RouteTable) {
-    for (let i = 0; i < createdPublicSubnets.length; i++) {
+    for (let i = 0; i < publicSubnetIds.length; i++) {
         const association = new aws.ec2.RouteTableAssociation(`${pulumiRouteTable.associationName}-${i + 1}`, {
             routeTableId:   routeTable.id,
-            subnetId:       createdPublicSubnets[i].id,
+            subnetId:       publicSubnetIds[i],
         }, {dependsOn: [ routeTable ]})
     }
 }

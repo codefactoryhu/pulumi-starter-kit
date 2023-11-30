@@ -1,43 +1,33 @@
-import * as pulumi              from "@pulumi/pulumi";
-import * as aws                 from "@pulumi/aws";
+import * as pulumi  from '@pulumi/pulumi';
+import * as aws     from '@pulumi/aws';
 
-//Import interfaces
-import { 
-    natGatewayType,
-    routeTableType,
-    elasticIpType
-} from "../vpc-interface";
+//Import Interfaces
+import { natGatewayType, routeTableType, elasticIpType } from '../vpc-interface';
 
-// Import dependencies
-import { createdPublicSubnets } from "../subnets/subnet";
-import { createdInternetGateways }  from "../igw/igw";
-
-// Import variables
-import { createdPrivateSubnets } from "../subnets/subnet";
+// Import Outputs
+import { createdVpc }       from '../vpc/vpc';
+import { publicSubnetIds }  from '../subnets/subnet';
+import { privateSubnetIds } from '../subnets/subnet';
+import { eipAllocationId }  from '../eip/eip';
 
 const config            = new pulumi.Config();
 const project           = config.require("project");
 const pulumiNatGateway  = config.requireObject<natGatewayType>("natGateway");
 const pulumiRouteTable  = config.requireObject<routeTableType>("privateRouteTable");
-const pulumiElasticIp   = config.requireObject<elasticIpType>("elasticIp");
 
-export function natGateway(vpc:aws.ec2.Vpc) {
-    const eip = new aws.ec2.Eip(pulumiElasticIp.name, {
-        tags: {"Name": pulumiElasticIp.name, "Project": project},
-    }, {dependsOn: [ createdInternetGateways[0] ]})
-
+export function natGateway() {
     const natGw = new aws.ec2.NatGateway(pulumiNatGateway.name,{
-        subnetId:           createdPublicSubnets[0].id,
-        allocationId:       eip.allocationId,
+        subnetId:           publicSubnetIds[0],
+        allocationId:       eipAllocationId,
         connectivityType:   pulumiNatGateway.connectivityType,
         tags: {"Name": pulumiNatGateway.name, "Project": project},
-    }, {dependsOn: [ createdPublicSubnets[0] ]});
-    privateRouteTable(vpc, natGw)
+    });
+    privateRouteTable(natGw)
 }
 
-function privateRouteTable(vpc:aws.ec2.Vpc, natGw:aws.ec2.NatGateway) {
+function privateRouteTable(natGw:aws.ec2.NatGateway) {
     const routeTable = new aws.ec2.RouteTable(pulumiRouteTable.name, {
-        vpcId: vpc.id,
+        vpcId: createdVpc.id,
         routes:
         [
             {
@@ -46,13 +36,13 @@ function privateRouteTable(vpc:aws.ec2.Vpc, natGw:aws.ec2.NatGateway) {
             }
         ],
         tags: {"Name": pulumiRouteTable.name, "Project": project},
-    }, {dependsOn: [ natGw ]})
+    })
     associateRouteTable(routeTable);
 }
 
 function associateRouteTable(routeTable:aws.ec2.RouteTable) {
         const association = new aws.ec2.RouteTableAssociation(pulumiRouteTable.associationName, {
             routeTableId:   routeTable.id,
-            subnetId:       createdPrivateSubnets[0].id,
-        }, {dependsOn: [ routeTable ]})
+            subnetId:       privateSubnetIds[0],
+        })
 }

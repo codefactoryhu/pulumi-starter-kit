@@ -8,8 +8,8 @@ const config    = new pulumi.Config();
 const project   = config.require("project");
 const pulumiVpc = config.requireObject<vpcType>("vpc");
 
-// Used by Subnets, Internet Gateway, NAT Gateway
-export const createdVpc:aws.ec2.Vpc[] = [];
+// Used by Subnets, Internet Gateway, NAT Gateway, EKS
+export let createdVpc:aws.ec2.Vpc;
 
 export function vpc() {
     const vpc = new aws.ec2.Vpc(pulumiVpc.name, {
@@ -17,5 +17,5 @@ export function vpc() {
         instanceTenancy:    pulumiVpc.instanceTenancy,
         tags: {"Name": pulumiVpc.name, "Project": project},
     });
-    createdVpc.push(vpc);
+    createdVpc = vpc;
 }
