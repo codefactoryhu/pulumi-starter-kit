@@ -64,7 +64,12 @@ config:
     keyUsage: ENCRYPT_DECRYPT
     multiRegion: false
 
-  #KMS key alias
+  # KMS key alias
   aws-starter-kit:kmsKeyAlias:
     name: pulumi-alias
     displayName: alias/pulumi-key
+
+  # EKS cluster
+  aws-starter-kit:eksCluster:
+    name: pulumi-cluster
+    nodeAssociatePublicIpAddress: false
