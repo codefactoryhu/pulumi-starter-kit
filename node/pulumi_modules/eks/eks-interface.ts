@@ -1,6 +1,7 @@
 interface eksClusterType {
     name: string;
     nodeAssociatePublicIpAddress: boolean;
+    authUsers: Array<string>;
 }
 
 interface eksClusterAddonType {
