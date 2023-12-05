@@ -3,6 +3,13 @@ interface eksClusterType {
     nodeAssociatePublicIpAddress: boolean;
 }
 
+interface eksClusterAddonType {
+    name: string;
+    version: string;
+    resolveConflictsOnCreate?: string;
+}
+
 export {
-    eksClusterType
+    eksClusterType,
+    eksClusterAddonType,
 }

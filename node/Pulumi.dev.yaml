@@ -73,3 +73,20 @@ config:
   aws-starter-kit:eksCluster:
     name: pulumi-cluster
     nodeAssociatePublicIpAddress: false
+
+  # EKS cluster addons
+  aws-starter-kit:coreDnsAddon:
+    name: coredns
+    version: v1.10.1-eksbuild.6
+  aws-starter-kit:kubeProxyAddon:
+    name: kube-proxy
+    version: v1.28.2-eksbuild.2
+  aws-starter-kit:vpcCniAddon:
+    name: vpc-cni
+    version: v1.15.4-eksbuild.1
+    resolveConflictsOnCreate: OVERWRITE
+  aws-starter-kit:ebsCsiAddon:
+    name: aws-ebs-csi-driver
+    version: v1.25.0-eksbuild.1
+
+
