@@ -16,6 +16,7 @@ const pulumiebsCsi = config.requireObject<eksClusterAddonType>("ebsCsiAddon");
 export function coreDnsAddon() {
     const coreDnsAddon = new aws.eks.Addon(pulumicoreDns.name, {
         addonName: pulumicoreDns.name,
+        resolveConflictsOnCreate: pulumicoreDns.resolveConflictsOnCreate,
         clusterName: createdCluster.eksCluster.name,
         addonVersion: pulumicoreDns.version,
     });
@@ -24,6 +25,7 @@ export function coreDnsAddon() {
 export function kubeProxyAddon() {
     const kubeProxyAddon = new aws.eks.Addon(pulumikubeProxy.name, {
         addonName: pulumikubeProxy.name,
+        resolveConflictsOnCreate: pulumikubeProxy.resolveConflictsOnCreate,
         clusterName: createdCluster.eksCluster.name,
         addonVersion: pulumikubeProxy.version,
     });
