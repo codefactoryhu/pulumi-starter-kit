@@ -78,9 +78,11 @@ config:
   aws-starter-kit:coreDnsAddon:
     name: coredns
     version: v1.10.1-eksbuild.6
+    resolveConflictsOnCreate: OVERWRITE
   aws-starter-kit:kubeProxyAddon:
     name: kube-proxy
     version: v1.28.2-eksbuild.2
+    resolveConflictsOnCreate: OVERWRITE
   aws-starter-kit:vpcCniAddon:
     name: vpc-cni
     version: v1.15.4-eksbuild.1
