@@ -6,11 +6,6 @@ import { createNodeGroup } from './nodegroups/nodegroup';
 export function createEks() {
     eksCluster();
     createNodeGroup();
-
-export function createEks() {
-    eksCluster();
-    createAuthConfig();
-  
     // eks addons
     // coreDnsAddon();
     // kubeProxyAddon();
