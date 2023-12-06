@@ -27,7 +27,11 @@ export function eksCluster() {
         privateSubnetIds:               privateSubnetIds,
         encryptionConfigKeyArn:         kmsArn,
         nodeAssociatePublicIpAddress:   pulumiEksCluster.nodeAssociatePublicIpAddress,
+
         tags: {"Name": pulumiEksCluster.name, "Project": project},
     })
     createdCluster = cluster;
 }
+
+
+

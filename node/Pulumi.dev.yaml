@@ -73,6 +73,10 @@ config:
   aws-starter-kit:eksCluster:
     name: pulumi-cluster
     nodeAssociatePublicIpAddress: false
+    authUsers:
+      - "arn:aws:iam::500286922458:user/vigh.zoltan"
+      - "arn:aws:iam::500286922458:user/papp.csenge"
+      - "arn:aws:iam::500286922458:user/vargha.laszlo"
 
   # EKS cluster addons
   aws-starter-kit:coreDnsAddon:
