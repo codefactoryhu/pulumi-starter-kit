@@ -73,6 +73,11 @@ config:
   aws-starter-kit:eksCluster:
     name: pulumi-cluster
     nodeAssociatePublicIpAddress: false
+    managedNodeGroupMinSize: 1
+    managedNodeGroupDesiredSize: 1
+    managedNodeGroupMaxSize: 3
+    managedNodeGroupDiskSize: 50
+    managedNodeGroupInstanceTypes: ["t3.small"]
     authUsers:
       - "arn:aws:iam::500286922458:user/vigh.zoltan"
       - "arn:aws:iam::500286922458:user/papp.csenge"
