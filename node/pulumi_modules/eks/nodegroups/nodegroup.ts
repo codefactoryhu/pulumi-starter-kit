@@ -12,9 +12,12 @@ const config                = new pulumi.Config();
 const pulumiEksCluster      = config.requireObject<eksClusterType>("eksCluster");
 
 
+export let createdNodeGroup:eks.ManagedNodeGroup;
+
+
 export function createNodeGroup() {
 
-    const managedNodeGroup1 = new eks.ManagedNodeGroup(`${pulumiEksCluster.name}-managed-nodegroup`, {
+    const managedNodeGroup = new eks.ManagedNodeGroup(`${pulumiEksCluster.name}-managed-nodegroup`, {
         cluster: createdCluster.core,
         nodeGroupName: `${pulumiEksCluster.name}-ng`,
         nodeRoleArn: createdCluster.instanceRoles[0].arn,
@@ -28,4 +31,5 @@ export function createNodeGroup() {
         diskSize: pulumiEksCluster.managedNodeGroupDiskSize,
     },{ dependsOn: [ createdCluster ] });
     
+    createdNodeGroup = managedNodeGroup;
 }

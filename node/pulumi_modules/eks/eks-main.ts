@@ -6,9 +6,10 @@ import { createNodeGroup } from './nodegroups/nodegroup';
 export function createEks() {
     eksCluster();
     createNodeGroup();
+
     // eks addons
-    // coreDnsAddon();
-    // kubeProxyAddon();
-    // vpcCniAddon();
-    // ebsCsiAddon();
+    coreDnsAddon();
+    kubeProxyAddon();
+    vpcCniAddon();
+    ebsCsiAddon();
 }
