@@ -6,6 +6,7 @@ interface eksClusterType {
     managedNodeGroupMaxSize: number;
     managedNodeGroupDesiredSize: number;
     managedNodeGroupDiskSize: number;
+    authUsers: Array<string>;
 }
 
 interface eksClusterAddonType {
