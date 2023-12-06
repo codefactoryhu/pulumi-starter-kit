@@ -12,6 +12,7 @@ import { eipAllocationId }  from '../eip/eip';
 
 const config            = new pulumi.Config();
 const project           = config.require("project");
+const env               = config.require("env");
 const pulumiNatGateway  = config.requireObject<natGatewayType>("natGateway");
 const pulumiRouteTable  = config.requireObject<routeTableType>("privateRouteTable");
 
@@ -20,7 +21,11 @@ export function natGateway() {
         subnetId:           publicSubnetIds[0],
         allocationId:       eipAllocationId,
         connectivityType:   pulumiNatGateway.connectivityType,
-        tags: {"Name": pulumiNatGateway.name, "Project": project},
+        tags: {
+            "Name"   : `${env}-${pulumiNatGateway.name}`, 
+            "Env"    : env,
+            "Project": project
+        },
     });
     privateRouteTable(natGw)
 }
@@ -35,7 +40,11 @@ function privateRouteTable(natGw:aws.ec2.NatGateway) {
                 gatewayId: natGw.id,
             }
         ],
-        tags: {"Name": pulumiRouteTable.name, "Project": project},
+        tags: {
+            "Name"   : `${env}-${pulumiRouteTable.name}`, 
+            "Env"    : env,
+            "Project": project
+        },
     })
     associateRouteTable(routeTable);
 }

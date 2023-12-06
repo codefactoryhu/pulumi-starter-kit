@@ -6,6 +6,7 @@ import { kmsType, kmsAliasType } from '../kms-interface';
 
 const config                = new pulumi.Config();
 const project               = config.require("project");
+const env                   = config.require("env");
 const pulumikmsKey          = config.requireObject<kmsType>("kmsKey");
 const pulumikmsKeyAlias     = config.requireObject<kmsAliasType>("kmsKeyAlias");
 
@@ -19,7 +20,11 @@ export function kms() {
         deletionWindowInDays:   pulumikmsKey.deletionWindowInDays,
         enableKeyRotation:      pulumikmsKey.enableKeyRotation,
         description:            pulumikmsKey.description,
-        tags: {"Name": pulumikmsKey.name, "Project": project},
+        tags: {
+            "Name"   : `${env}-${pulumikmsKey.name}`, 
+            "Env"    : env,
+            "Project": project
+        },
     })
     kmsArn = kmsKey.arn;
     kmsAlias(kmsKey);

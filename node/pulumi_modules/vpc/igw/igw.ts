@@ -10,6 +10,7 @@ import { publicSubnetIds }  from '../subnets/subnet';
 
 const config                = new pulumi.Config();
 const project               = config.require("project");
+const env                   = config.require("env")
 const pulumiInternetGateway = config.requireObject<internetGatewayType>("internetGateway");
 const pulumiRouteTable      = config.requireObject<routeTableType>("publicRouteTable");
 
@@ -19,7 +20,11 @@ export let createdInternetGateway:aws.ec2.InternetGateway;
 export function internetGateway() {
     const igw = new aws.ec2.InternetGateway(pulumiInternetGateway.name, {
         vpcId:  createdVpc.id,
-        tags: {"Name": pulumiInternetGateway.name, "Project": project},
+        tags: {
+            "Name"   : `${env}-${pulumiInternetGateway.name}`, 
+            "Env"    : env,
+            "Project": project
+        },
     });
     createdInternetGateway = igw;
     publicRouteTable();
@@ -35,7 +40,10 @@ function publicRouteTable() {
                 gatewayId: createdInternetGateway.id,
             }
         ],
-        tags: {"Name": pulumiRouteTable.name, "Project": project},
+        tags: {
+            "Name"   : `${env}-${pulumiRouteTable.name}`, 
+            "Env"    : env,
+            "Project": project},
     })
     associateRouteTable(routeTable);
 }

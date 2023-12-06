@@ -14,6 +14,7 @@ import { privateSubnetIds } from '../../vpc/subnets/subnet';
 import { kmsArn }           from '../../kms/key/key';
 
 const config                = new pulumi.Config();
+const env                   = config.require("env");
 const project               = config.require("project");
 const pulumiEksCluster      = config.requireObject<eksClusterType>("eksCluster");
 
@@ -21,7 +22,7 @@ export let createdCluster:eks.Cluster;
 
 export function eksCluster() {
     const cluster = new eks.Cluster(pulumiEksCluster.name, {
-        name:                           pulumiEksCluster.name,
+        name:                           `${env}-${pulumiEksCluster.name}`,
         vpcId:                          createdVpc.id,
         publicSubnetIds:                publicSubnetIds,
         privateSubnetIds:               privateSubnetIds,
@@ -31,7 +32,10 @@ export function eksCluster() {
         desiredCapacity: pulumiEksCluster.managedNodeGroupDesiredSize,
         minSize: pulumiEksCluster.managedNodeGroupMinSize,
         maxSize: pulumiEksCluster.managedNodeGroupMaxSize,
-        tags: {"Name": pulumiEksCluster.name, "Project": project},
+        tags: {
+              "Name"   : `${env}-${pulumiEksCluster.name}`, 
+              "Env"    : env, 
+              "Project": project},
     })
     createdCluster = cluster;
 }
