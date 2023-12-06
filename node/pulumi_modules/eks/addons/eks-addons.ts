@@ -6,6 +6,8 @@ import { eksClusterAddonType } from '../eks-interface';
 
 // import Outputs
 import { createdCluster } from '../cluster/eks';
+import { createdNodeGroup } from '../nodegroups/nodegroup';
+
 
 const config                = new pulumi.Config();
 const pulumicoreDns = config.requireObject<eksClusterAddonType>("coreDnsAddon");
@@ -19,7 +21,7 @@ export function coreDnsAddon() {
         resolveConflictsOnCreate: pulumicoreDns.resolveConflictsOnCreate,
         clusterName: createdCluster.eksCluster.name,
         addonVersion: pulumicoreDns.version,
-    });
+    },{ dependsOn: [ createdNodeGroup ] });
 }
 
 export function kubeProxyAddon() {
@@ -28,7 +30,7 @@ export function kubeProxyAddon() {
         resolveConflictsOnCreate: pulumikubeProxy.resolveConflictsOnCreate,
         clusterName: createdCluster.eksCluster.name,
         addonVersion: pulumikubeProxy.version,
-    });
+    },{ dependsOn: [ createdNodeGroup ] });
 }
 
 export function vpcCniAddon() {
@@ -37,7 +39,7 @@ export function vpcCniAddon() {
         resolveConflictsOnCreate: pulumivpcCni.resolveConflictsOnCreate,
         clusterName: createdCluster.eksCluster.name,
         addonVersion: pulumivpcCni.version,
-    });
+    },{ dependsOn: [ createdNodeGroup ] });
 }
 
 
@@ -58,7 +60,7 @@ export function ebsCsiAddon() {
         clusterName: createdCluster.eksCluster.name,
         addonVersion: pulumiebsCsi.version,
         serviceAccountRoleArn: ebsCsiDriverRole.arn,
-    });
+    },{ dependsOn: [ createdNodeGroup ] });
 }
 
 
