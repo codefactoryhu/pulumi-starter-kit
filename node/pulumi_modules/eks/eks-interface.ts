@@ -1,6 +1,11 @@
 interface eksClusterType {
     name: string;
     nodeAssociatePublicIpAddress: boolean;
+    managedNodeGroupInstanceTypes: Array<string>;
+    managedNodeGroupMinSize: number;
+    managedNodeGroupMaxSize: number;
+    managedNodeGroupDesiredSize: number;
+    managedNodeGroupDiskSize: number;
     authUsers: Array<string>;
 }
 

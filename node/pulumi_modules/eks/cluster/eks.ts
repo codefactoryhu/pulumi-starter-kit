@@ -28,11 +28,14 @@ export function eksCluster() {
         privateSubnetIds:               privateSubnetIds,
         encryptionConfigKeyArn:         kmsArn,
         nodeAssociatePublicIpAddress:   pulumiEksCluster.nodeAssociatePublicIpAddress,
-
+        instanceType: pulumiEksCluster.managedNodeGroupInstanceTypes[0],
+        desiredCapacity: pulumiEksCluster.managedNodeGroupDesiredSize,
+        minSize: pulumiEksCluster.managedNodeGroupMinSize,
+        maxSize: pulumiEksCluster.managedNodeGroupMaxSize,
         tags: {
-            "Name"   : `${env}-${pulumiEksCluster.name}`, 
-            "Env"    : env, 
-            "Project": project},
+              "Name"   : `${env}-${pulumiEksCluster.name}`, 
+              "Env"    : env, 
+              "Project": project},
     })
     createdCluster = cluster;
 }
