@@ -1,7 +1,7 @@
 config:
   # Global
   aws-starter-kit:project: aws-starter-kit
-  aws-starter-kit:env: dev
+  aws-starter-kit:env: prod
   aws-starter-kit:availabilityZone:
     - eu-west-2a
     - eu-west-2b

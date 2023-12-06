@@ -9,6 +9,7 @@ import { createdVpc }   from '../vpc/vpc';
 
 const config                = new pulumi.Config();
 const project               = config.require("project");
+const env                   = config.require("env")
 const availabilityZone      = config.requireObject<string[]>("availabilityZone");
 const pulumiPublicSubnet    = config.requireObject<subnetType>("publicSubnet");
 const pulumiPrivateSubnet   = config.requireObject<subnetType>("privateSubnet");
@@ -26,7 +27,11 @@ export function publicSubnet() {
             availabilityZone:       availabilityZone[i],
             cidrBlock:              pulumiPublicSubnet.cidr[i],
             mapPublicIpOnLaunch:    pulumiPublicSubnet.mapPublicIpOnLaunch,
-            tags: {"Name": pulumiPublicSubnet.name, "Project": project},
+            tags: {
+                "Name": `${env}-${pulumiPublicSubnet.name}` , 
+                "Env": env,
+                "Project": project,
+            },
         });
         publicSubnetIds.push(publicSubnet.id);
     }
@@ -39,7 +44,10 @@ export function privateSubnet() {
             availabilityZone:       availabilityZone[i],
             cidrBlock:              pulumiPrivateSubnet.cidr[i],
             mapPublicIpOnLaunch:    pulumiPublicSubnet.mapPublicIpOnLaunch,
-            tags: {"Name": pulumiPrivateSubnet.name, "Project": project},
+            tags: {
+                "Name"   : `${env}-${pulumiPrivateSubnet.name}`, 
+                "Env"    : env,
+                "Project": project},
         });
         privateSubnetIds.push(publicSubnet.id);
     }
