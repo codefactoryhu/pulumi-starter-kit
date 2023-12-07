@@ -110,3 +110,13 @@ config:
       versioningEnabled: true
       acl: "private"
 
+  # ECR
+  aws-starter-kit:ecr:
+    - ecr1:
+      name: "pulumi-ecr1"
+      forceDelete: true
+      imageTagMutability: 'MUTABLE'
+    - ecr2:
+      name: "pulumi-ecr2"
+      forceDelete: true
+      imageTagMutability: 'MUTABLE'
