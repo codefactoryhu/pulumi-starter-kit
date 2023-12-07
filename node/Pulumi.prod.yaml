@@ -101,4 +101,25 @@ config:
     name: aws-ebs-csi-driver
     version: v1.25.0-eksbuild.1
 
+  # S3 buckets
+  aws-starter-kit:s3-buckets:
+    - bucket1:
+      name: pulumi-bucket1
+      versioningEnabled: true
+      acl: "private"
+    - bucket2:
+      name: pulumi-bucket2
+      versioningEnabled: true
+      acl: "private"
+
+  # ECR
+  aws-starter-kit:ecr:
+    - ecr1:
+      name: "pulumi-ecr1"
+      forceDelete: true
+      imageTagMutability: 'MUTABLE'
+    - ecr2:
+      name: "pulumi-ecr2"
+      forceDelete: true
+      imageTagMutability: 'MUTABLE'
 
