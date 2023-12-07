@@ -2,6 +2,8 @@ interface vpcType {
     name: string;
     cidr: string;
     instanceTenancy: string;
+    enableDnsHostnames: boolean;
+    enableDnsSupport: boolean;
 }
 
 interface subnetType {
