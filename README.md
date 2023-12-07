@@ -12,6 +12,12 @@ Currently this code will create the following resources:
 - KMS
     - KMS key
     - KMS key alias
+- EKS
+    - 4 self-managed addons
+    - EKS-managed nodegroup
+
+## AWSX
+In the awsx folder there are modules created with Pulumi's AWSX library. It is working as well, but currently not used in this code. Instead we are using Pulumi AWS Classic library
 
 ## How to set up environment
 
@@ -55,14 +61,29 @@ As this code will create resources in AWS you need to configure your AWS profile
 - Configure AWS profile: https://docs.aws.amazon.com/cli/latest/reference/configure/
 
 ## Modifying resources
-To modify AWS resources to fit your needs (e.g. change CIDR values, availability zones, number of subnets, etc...) open the _Pulumi.dev.yaml_ file and modify the values there. This file contains the variables used by the code.
+To modify AWS resources to fit your needs (e.g. change CIDR values, availability zones, number of subnets, etc...) open the _Pulumi.dev.yaml_ and _Pulumi.prod.yaml_ file and modify the values there. This files contain the variables used by the code in different environments.
 
 ## Running Pulumi
+### Create stack
+There are currently 2 different environments in this project, a _dev_ and a _prod_. Before running the code you have to create a stack for both environments.
+```
+pulumi stack init dev
+```
+```
+pulumi stack init prod
+```
+Now you can change between these stack and Pulumi will automatically use the corresponding _yaml_ file to read the variables.
+To change between stacks:
+```
+pulumi stack select dev
+pulumi stack select prod
+```
+
 ### Create resources
 After your environment is configured:
 - Clone this repository
 - Enter the _node_ directory
-- Run command: **pulumi up**  
+- Run command: **pulumi up**
   
 This command will first check if the pulumi configuration is valid and the resources can be created. If everything is fine you can select yes in your terminal and the resources will be created in a few minutes.
 
