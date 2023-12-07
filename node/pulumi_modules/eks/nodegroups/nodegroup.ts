@@ -18,7 +18,7 @@ export let createdNodeGroup:eks.ManagedNodeGroup;
 export function createNodeGroup() {
 
     const managedNodeGroup = new eks.ManagedNodeGroup(`${pulumiEksCluster.name}-managed-nodegroup`, {
-        cluster: createdCluster.core,
+        cluster: createdCluster,
         nodeGroupName: `${pulumiEksCluster.name}-ng`,
         nodeRoleArn: createdCluster.instanceRoles[0].arn,
         

@@ -16,6 +16,8 @@ export function vpc() {
     const vpc = new aws.ec2.Vpc(pulumiVpc.name, {
         cidrBlock:          pulumiVpc.cidr,
         instanceTenancy:    pulumiVpc.instanceTenancy,
+        enableDnsSupport:   pulumiVpc.enableDnsSupport,
+        enableDnsHostnames: pulumiVpc.enableDnsHostnames,
         tags: {
             "Name": `${env}-${pulumiVpc.name}` , 
             "Env": env,

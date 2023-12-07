@@ -13,6 +13,8 @@ config:
     cidr: 10.0.0.0/16
     instanceTenancy: default
     numberOfAvailabilityZones: 3
+    enableDnsHostnames: true
+    enableDnsSupport: true
 
   # Subnets
   aws-starter-kit:publicSubnet:
