@@ -84,6 +84,8 @@ config:
     authUsers:
       - "arn:aws:iam::123456789123:user/example.user"
 
+
+
   # EKS cluster addons
   aws-starter-kit:coreDnsAddon:
     name: coredns
@@ -122,3 +124,24 @@ config:
       name: "pulumi-ecr2"
       forceDelete: true
       imageTagMutability: 'MUTABLE'
+
+  # Helm charts
+  aws-starter-kit:helmCharts:
+    - reloader:
+      name: "reloader"
+      namespace: "infra"
+      repository: "https://stakater.github.io/stakater-charts"
+      chart: "reloader"
+      chartVersion: "1.0.24"
+    - nats:
+      name: "nats"
+      repository: "https://nats-io.github.io/k8s/helm/charts/"
+      chart: "nats"
+      chart_version: "0.19.16"
+      namespace: "infra"
+      values: {
+        cluster: {
+            enabled: true,
+            replicas: 3
+        },
+      }

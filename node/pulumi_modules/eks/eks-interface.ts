@@ -15,7 +15,17 @@ interface eksClusterAddonType {
     resolveConflictsOnCreate?: string;
 }
 
+interface helmChartType {
+    name: string;
+    namespace: string;
+    repository: string;
+    chart: string;
+    chartVersion: string;
+    values: any;
+}
+
 export {
     eksClusterType,
     eksClusterAddonType,
+    helmChartType,
 }
