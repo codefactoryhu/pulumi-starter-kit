@@ -4,6 +4,7 @@ interface vpcType {
     instanceTenancy: string;
     enableDnsHostnames: boolean;
     enableDnsSupport: boolean;
+    enableFlowLogs: boolean;
 }
 
 interface subnetType {

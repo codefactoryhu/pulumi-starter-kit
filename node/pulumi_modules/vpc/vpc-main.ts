@@ -3,6 +3,7 @@ import { publicSubnet, privateSubnet }  from './subnets/subnet';
 import { internetGateway }              from './igw/igw';
 import { elasticIp }                    from './eip/eip';
 import { natGateway }                   from './nat_gw/natgw';
+import { vpcFlowLogs }                  from './flowlog/flowlog';
 
 export function createVpc() {
     vpc();
@@ -11,4 +12,5 @@ export function createVpc() {
     internetGateway();
     elasticIp();
     natGateway();
+    vpcFlowLogs();
 }
