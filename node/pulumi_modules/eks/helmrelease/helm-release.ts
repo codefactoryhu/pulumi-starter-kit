@@ -23,9 +23,8 @@ export function createHelmReleases() {
     namespaceList = [];
 
     for (let helmRelease of pulumiHelmReleases) {
-        let namespace: k8s.core.v1.Namespace;
         if (!namespaceList.includes(helmRelease.namespace)) {
-            namespace= new k8s.core.v1.Namespace(helmRelease.namespace, {
+            const namespace= new k8s.core.v1.Namespace(helmRelease.namespace, {
                 metadata: {
                     name: helmRelease.namespace,
                 },
@@ -34,10 +33,7 @@ export function createHelmReleases() {
                 dependsOn:createdCluster,
             });
             namespaceList.push(helmRelease.namespace);
-        } else {
-            namespace = new k8s.core.v1.Namespace("default", {metadata: {name: "default",},}, { provider: k8sProvider });
         }
-
         const release = new k8s.helm.v3.Release(helmRelease.name, {
             chart: helmRelease.name,
             repositoryOpts: {
@@ -49,7 +45,6 @@ export function createHelmReleases() {
           
             skipAwait: false,
         }, {
-            dependsOn: namespace,
             provider: createdCluster.provider,
         });
     }
