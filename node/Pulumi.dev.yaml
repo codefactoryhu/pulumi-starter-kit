@@ -15,7 +15,7 @@ config:
     numberOfAvailabilityZones: 3
     enableDnsHostnames: true
     enableDnsSupport: true
-    enableFlowLogs: false
+    enableFlowLogs: true
 
   # Subnets
   aws-starter-kit:publicSubnet:
