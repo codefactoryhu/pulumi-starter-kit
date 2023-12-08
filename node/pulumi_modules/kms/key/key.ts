@@ -13,7 +13,7 @@ const pulumikmsKeyAlias     = config.requireObject<kmsAliasType>("kmsKeyAlias");
 export let kmsArn:pulumi.Output<string>;
 
 export function kms() {
-    const kmsKey = new aws.kms.Key(pulumikmsKey.name, {
+    const kmsKey = new aws.kms.Key(`${pulumikmsKey.name}-${env}`, {
         isEnabled:              pulumikmsKey.isEnabled,
         keyUsage:               pulumikmsKey.keyUsage,
         multiRegion:            pulumikmsKey.multiRegion,
@@ -31,8 +31,8 @@ export function kms() {
 };
 
 function kmsAlias(kmsKey:aws.kms.Key) {
-    const kmsAlias = new aws.kms.Alias(pulumikmsKeyAlias.name, {
+    const kmsAlias = new aws.kms.Alias(`${pulumikmsKeyAlias.name}-${env}`, {
         targetKeyId: kmsKey.id,
-        name: pulumikmsKeyAlias.displayName,
+        name: `${pulumikmsKeyAlias.displayName}-${env}`,
     }, {dependsOn: [ kmsKey ]})
 };

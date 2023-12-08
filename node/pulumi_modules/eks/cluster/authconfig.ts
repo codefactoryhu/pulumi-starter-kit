@@ -12,7 +12,7 @@ const pulumiEksCluster      = config.requireObject<eksClusterType>("eksCluster")
 
 export function createAuthConfig() {
     // Create a Kubernetes provider instance using the kubeconfig from the EKS cluster
-    const k8sProvider = new k8s.Provider("k8s-provider", {
+    const k8sProvider = new k8s.Provider("k8s-provider-authconfig", {
         kubeconfig: createdCluster.kubeconfig.apply(JSON.stringify),
     });
     
