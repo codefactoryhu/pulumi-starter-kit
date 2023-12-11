@@ -1,17 +1,16 @@
-import * as pulumi from "@pulumi/pulumi";
-import * as eks from "@pulumi/eks";
-import * as k8s from "@pulumi/kubernetes";
+import * as pulumi  from "@pulumi/pulumi";
+import * as k8s     from "@pulumi/kubernetes";
 
 
 // Import Interfaces
-import { eksClusterType, helmChartType } from '../eks-interface';
+import { helmChartType } from '../eks-interface';
 
 // import Outputs
-import { createdCluster } from '../cluster/eks';
+import { createdCluster }   from '../cluster/eks';
+import { createdNodeGroup } from '../nodegroups/nodegroup';
 
 const config                = new pulumi.Config();
 const pulumiHelmReleases    = config.requireObject<Array<helmChartType>>("helmCharts");
-
 
 export function createHelmReleases() {
 
@@ -24,13 +23,13 @@ export function createHelmReleases() {
 
     for (let helmRelease of pulumiHelmReleases) {
         if (!namespaceList.includes(helmRelease.namespace)) {
-            const namespace= new k8s.core.v1.Namespace(helmRelease.namespace, {
+            const namespace = new k8s.core.v1.Namespace(helmRelease.namespace, {
                 metadata: {
                     name: helmRelease.namespace,
                 },
             }, {
                 provider: k8sProvider,
-                dependsOn:createdCluster,
+                dependsOn: createdNodeGroup,
             });
             namespaceList.push(helmRelease.namespace);
         }
@@ -39,13 +38,14 @@ export function createHelmReleases() {
             repositoryOpts: {
                 repo:  helmRelease.repository,
             },
-            version: helmRelease.chartVersion,
-            namespace: helmRelease.namespace,
-            values: helmRelease.values,
+            version:    helmRelease.chartVersion,
+            namespace:  helmRelease.namespace,
+            values:     helmRelease.values,
           
             skipAwait: false,
         }, {
-            provider: createdCluster.provider,
+            provider:   createdCluster.provider,
+            dependsOn:  createdNodeGroup,
         });
     }
 }
