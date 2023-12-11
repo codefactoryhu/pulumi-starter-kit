@@ -3,28 +3,34 @@ import * as aws     from '@pulumi/aws';
 import * as k8s     from "@pulumi/kubernetes";
 
 export function iamRoleServiceAccount() {
-    const policy = new aws.iam.Policy("policy",
-    {
-        policy: JSON.stringify(
-        {
-            Version: "2012-10-17",
-            Statement:
-            [
+    const assumeRole = aws.iam.getPolicyDocument({
+        statements: [{
+            effect: "Allow",
+            principals: [{
+                type: "Service",
+                identifiers: ["ec2.amazonaws.com"],
+            }],
+            actions: ["sts:AssumeRole"],
+        }],
+    });
+
+    const albIngressRole = new aws.iam.Role("pulumiAlbIngressRole", {assumeRolePolicy: assumeRole.then(assumeRole => assumeRole.json)});
+
+    const albInlinePolicy = aws.iam.getPolicyDocument({
+            statements: [
                 {
-                    Action: "iam:CreateServiceLinkedRole",
-                    Condition:
+                    actions: ["iam:CreateServiceLinkedRole"],
+                    conditions: [
                     {
-                        StringEquals:
-                        {
-                            "iam:AWSServiceName": "elasticloadbalancing.amazonaws.com"
-                        }
-                    },
-                    Effect: "Allow",
-                    Resource: "*",
+                        test: "StringEquals",
+                        variable: "iam:AWSServiceName",
+                        values: ["elasticloadbalancing.amazonaws.com"]
+                    }],
+                    effect: "Allow",
+                    resources: ["*"]
                 },
                 {
-                    Action: 
-                    [
+                    actions: [
                         "elasticloadbalancing:DescribeTargetHealth",
                         "elasticloadbalancing:DescribeTargetGroups",
                         "elasticloadbalancing:DescribeTargetGroupAttributes",
@@ -49,12 +55,11 @@ export function iamRoleServiceAccount() {
                         "ec2:DescribeAddresses",
                         "ec2:DescribeAccountAttributes"
                     ],
-                    Effect: "Allow",
-                    Resource: "*",
+                    effect: "Allow",
+                    resources: ["*"]
                 },
                 {
-                    Action: 
-                    [
+                    actions: [
                         "wafv2:GetWebACLForResource",
                         "wafv2:GetWebACL",
                         "wafv2:DisassociateWebACL",
@@ -73,131 +78,128 @@ export function iamRoleServiceAccount() {
                         "acm:ListCertificates",
                         "acm:DescribeCertificate"
                     ],
-                    Effect: "Allow",
-                    Resource: "*"
+                    effect: "Allow",
+                    resources: ["*"]
                 },
                 {
-                    Action:
-                    [
+                    actions: [
                         "ec2:RevokeSecurityGroupIngress",
                         "ec2:AuthorizeSecurityGroupIngress"
                     ],
-                    Effect: "Allow",
-                    Resource: "*",
+                    effect: "Allow",
+                    resources: ["*"]
                 },
                 {
-                    Action: "ec2:CreateSecurityGroup",
-                    Effect: "Allow",
-                    Resource: "*"
+                    actions: ["ec2:CreateSecurityGroup"],
+                    effect: "Allow",
+                    resources: ["*"]
                 },
                 {
-                    Action: "ec2:CreateTags",
-                    Condition:
+                    actions: ["ec2:CreateTags"],
+                    conditions: [
                     {
-                        Null:
-                        {
-                            "aws:RequestTag/elbv2.k8s.aws/cluster": "false",
-                        },
-                        StringEquals:
-                        {
-                            "ec2:CreateAction": "CreateSecurityGroup"
-                        }
+                        test: "Null",
+                        variable: "aws:RequestTag/elbv2.k8s.aws/cluster",
+                        values: ["false"]
+
                     },
-                    Effect: "Allow",
-                    Resource: "arn:aws:ec2:*:*:security-group/*"
+                    {
+                        test: "StringEquals",
+                        variable: "ec2:CreateAction",
+                        values: ["CreateSecurityGroup"]
+                    }],
+                    effect: "Allow",
+                    resources: ["arn:aws:ec2:*:*:security-group/*"]
                 },
                 {
-                    Action:
-                    [
+                    actions: [
                         "ec2:DeleteTags",
                         "ec2:CreateTags"
                     ],
-                    Condition:
+                    conditions: [
                     {
-                        Null:
-                        {
-                            "aws:RequestTag/elbv2.k8s.aws/cluster": "true",
-                            "aws:ResourceTag/elbv2.k8s.aws/cluster": "false"
-                        }
+                        test: "Null",
+                        variable: "aws:RequestTag/elbv2.k8s.aws/cluster",
+                        values: ["true"],
+    
                     },
-                    Effect: "Allow",
-                    Resource: "arn:aws:ec2:*:*:security-group/*"
+                    {
+                        test: "Null",
+                        variable: "aws:ResourceTag/elbv2.k8s.aws/cluster",
+                        values: ["false"]
+                    }],
+                    effect: "Allow",
+                    resources: ["arn:aws:ec2:*:*:security-group/*"]
                 },
                 {
-                    Action:
-                    [
+                    actions: [
                         "ec2:RevokeSecurityGroupIngress",
                         "ec2:DeleteSecurityGroup",
                         "ec2:AuthorizeSecurityGroupIngress"
                     ],
-                    Condition:
+                    conditions: [
                     {
-                        Null:
-                        {
-                            "aws:ResourceTag/elbv2.k8s.aws/cluster": "false"
-                        }
-                    },
-                    Effect: "Allow",
-                    Resource: "*"
+                        test: "Null",
+                        variable: "aws:ResourceTag/elbv2.k8s.aws/cluster",
+                        values: ["false"]
+                    }],
+                    effect: "Allow",
+                    resources: ["*"]
                 },
                 {
-                    Action:
-                    [
+                    actions: [
                         "elasticloadbalancing:CreateTargetGroup",
                         "elasticloadbalancing:CreateLoadBalancer"
                     ],
-                    Condition:
+                    conditions: [
                     {
-                        Null:
-                        {
-                            "aws:RequestTag/elbv2.k8s.aws/cluster": "false"
-                        }
-                    },
-                    Effect: "Allow",
-                    Resource: "*"
+                        test: "Null",
+                        variable: "aws:RequestTag/elbv2.k8s.aws/cluster",
+                        values: ["false"]
+                    }],
+                    effect: "Allow",
+                    resources: ["*"]
                 },
                 {
-                    Action:
-                    [
+                    actions: [
                         "elasticloadbalancing:DeleteRule",
                         "elasticloadbalancing:DeleteListener",
                         "elasticloadbalancing:CreateRule",
                         "elasticloadbalancing:CreateListener"
                     ],
-                    Effect: "Allow",
-                    Resource: "*"
+                    effect: "Allow",
+                    resources: ["*"]
                 },
                 {
-                    Action:
-                    [
+                    actions: [
                         "elasticloadbalancing:RemoveTags",
                         "elasticloadbalancing:AddTags"
                     ],
-                    Condition:
+                    conditions: [
                     {
-                        Null:
-                        {
-                            "aws:RequestTag/elbv2.k8s.aws/cluster": "true",
-                            "aws:ResourceTag/elbv2.k8s.aws/cluster": "false"
-                        }
+                        test: "Null",
+                        variable: "aws:RequestTag/elbv2.k8s.aws/cluster",
+                        values: ["true"]
                     },
-                    Effect: "Allow",
-                    Resource: 
-                    [
+                    {
+                        test: "Null",
+                        variable: "aws:ResourceTag/elbv2.k8s.aws/cluster",
+                        values: ["false"]
+                    }],
+                    effect: "Allow",
+                    resources: [
                         "arn:aws:elasticloadbalancing:*:*:targetgroup/*/*",
                         "arn:aws:elasticloadbalancing:*:*:loadbalancer/net/*/*",
                         "arn:aws:elasticloadbalancing:*:*:loadbalancer/app/*/*"
                     ]
                 },
                 {
-                    Action:
-                    [
+                    actions: [
                         "elasticloadbalancing:RemoveTags",
                         "elasticloadbalancing:AddTags"
                     ],
-                    Effect: "Allow",
-                    Resource:
-                    [
+                    effect: "Allow",
+                    resources: [
                         "arn:aws:elasticloadbalancing:*:*:listener/net/*/*/*",
                         "arn:aws:elasticloadbalancing:*:*:listener/app/*/*/*",
                         "arn:aws:elasticloadbalancing:*:*:listener-rule/net/*/*/*",
@@ -205,33 +207,30 @@ export function iamRoleServiceAccount() {
                     ]
                 },
                 {
-                    Action: "elasticloadbalancing:AddTags",
-                    Condition:
+                    actions: ["elasticloadbalancing:AddTags"],
+                    conditions: [
                     {
-                        Null:
-                        {
-                            "aws:RequestTag/elbv2.k8s.aws/cluster": "false"
-                        },
-                        StringEquals:
-                        {
-                            "elasticloadbalancing:CreateAction":
-                            [
-                                "CreateTargetGroup",
-                                "CreateLoadBalancer"
-                            ]
-                        }
+                        test: "Null",
+                        variable: "aws:RequestTag/elbv2.k8s.aws/cluster",
+                        values: ["false"]
                     },
-                    Effect: "Allow",
-                    Resource:
-                    [
+                    {
+                        test: "StringEquals",
+                        variable: "elasticloadbalancing:CreateAction",
+                        values: [
+                            "CreateTargetGroup",
+                            "CreateLoadBalancer"
+                        ]
+                    }],
+                    effect: "Allow",
+                    resources: [
                         "arn:aws:elasticloadbalancing:*:*:targetgroup/*/*",
                         "arn:aws:elasticloadbalancing:*:*:loadbalancer/net/*/*",
                         "arn:aws:elasticloadbalancing:*:*:loadbalancer/app/*/*"
                     ]
                 },
                 {
-                    Action:
-                    [
+                    actions: [
                         "elasticloadbalancing:SetSubnets",
                         "elasticloadbalancing:SetSecurityGroups",
                         "elasticloadbalancing:SetIpAddressType",
@@ -241,38 +240,43 @@ export function iamRoleServiceAccount() {
                         "elasticloadbalancing:DeleteTargetGroup",
                         "elasticloadbalancing:DeleteLoadBalancer"
                     ],
-                    Condition:
+                    conditions: [
                     {
-                        Null:
-                        {
-                            "aws:ResourceTag/elbv2.k8s.aws/cluster": "false"
-                        }
-                    },
-                    Effect: "Allow",
-                    Resource: "*"
+                        test: "Null",
+                        variable: "aws:ResourceTag/elbv2.k8s.aws/cluster",
+                        values: ["false"]
+                    }],
+                    effect: "Allow",
+                    resources: ["*"]
                 },
                 {
-                    Action:
-                    [
+                    actions: [
                         "elasticloadbalancing:RegisterTargets",
                         "elasticloadbalancing:DeregisterTargets"
                     ],
-                    Effect: "Allow",
-                    Resource: "arn:aws:elasticloadbalancing:*:*:targetgroup/*/*"
+                    effect: "Allow",
+                    resources: ["arn:aws:elasticloadbalancing:*:*:targetgroup/*/*"]
                 },
                 {
-                    Action:
-                    [
+                    actions: [
                         "elasticloadbalancing:SetWebAcl",
                         "elasticloadbalancing:RemoveListenerCertificates",
                         "elasticloadbalancing:ModifyRule",
                         "elasticloadbalancing:ModifyListener",
                         "elasticloadbalancing:AddListenerCertificates"
                     ],
-                    Effect: "Allow",
-                    Resource: "*"
-                }
-            ],
-        })
-    })
-}
+                    effect: "Allow",
+                    resources: ["*"]
+                }]
+            });
+
+    const albPolicy = new aws.iam.Policy("pulumiAlbInlinePolicy", {
+        description: "Policy for Pulumi EKS ALB Ingress Controller",
+        policy: albInlinePolicy.then(albInlinePolicy => albInlinePolicy.json),
+    });
+
+    const albRolePolicyAttach = new aws.iam.RolePolicyAttachment("pulumi-alb-role-policy-attach", {
+        role: albIngressRole.name,
+        policyArn: albPolicy.arn,
+    });
+        }
