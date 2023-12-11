@@ -82,6 +82,7 @@ config:
     managedNodeGroupMaxSize: 3
     managedNodeGroupDiskSize: 50
     managedNodeGroupInstanceTypes: ["t3.small"]
+    skipDefaultNodeGroup: true
     authUsers:
       - "arn:aws:iam::123456789123:user/example.user"
 

@@ -1,5 +1,7 @@
 // AWSX
-// import { createVpc } from './pulumi_modules/awsx/vpc-awsx/vpc-awsx';
+//import { createVpc } from './pulumi_modules/awsx/vpc-awsx/vpc-awsx';
+//import { createEcr } from './pulumi_modules/awsx/ecr-awsx/ecr-awsx-main';
+
 
 // AWS Classic
 import { createVpc } from       './pulumi_modules/vpc/vpc-main';

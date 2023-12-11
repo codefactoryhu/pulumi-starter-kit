@@ -27,6 +27,7 @@ export function eksCluster() {
         publicSubnetIds:                publicSubnetIds,
         privateSubnetIds:               privateSubnetIds,
         encryptionConfigKeyArn:         kmsArn,
+        skipDefaultNodeGroup:           pulumiEksCluster.skipDefaultNodeGroup,
         nodeAssociatePublicIpAddress:   pulumiEksCluster.nodeAssociatePublicIpAddress,
         instanceType: pulumiEksCluster.managedNodeGroupInstanceTypes[0],
         desiredCapacity: pulumiEksCluster.managedNodeGroupDesiredSize,
