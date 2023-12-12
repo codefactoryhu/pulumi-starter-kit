@@ -135,9 +135,9 @@ config:
       repository: "https://stakater.github.io/stakater-charts"
       chart: "reloader"
       chartVersion: "1.0.24"
-      values: 
+      values:
         reloader:
-          enableHa: true
+          enableHA: true
           deployment:
             replicas: 2
     - nats:
@@ -146,4 +146,3 @@ config:
       chart: "nats"
       chart_version: "0.19.16"
       namespace: "infra"
-      
