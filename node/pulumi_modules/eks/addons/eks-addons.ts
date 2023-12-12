@@ -8,6 +8,8 @@ import { eksClusterAddonType } from '../eks-interface';
 import { createdCluster } from '../cluster/eks';
 import { createdNodeGroup } from '../nodegroups/nodegroup';
 
+export let createdAddon:aws.eks.Addon;
+
 
 const config                = new pulumi.Config();
 const pulumicoreDns = config.requireObject<eksClusterAddonType>("coreDnsAddon");
@@ -61,6 +63,8 @@ export function ebsCsiAddon() {
         addonVersion: pulumiebsCsi.version,
         serviceAccountRoleArn: ebsCsiDriverRole.arn,
     },{ dependsOn: [ createdNodeGroup ] });
+
+    createdAddon = ebsCsiAddon;
 }
 
 
