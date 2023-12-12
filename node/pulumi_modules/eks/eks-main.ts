@@ -3,6 +3,7 @@ import { createAuthConfig} from './cluster/authconfig'
 import { vpcCniAddon, coreDnsAddon, kubeProxyAddon, ebsCsiAddon,  } from './addons/eks-addons';
 import { createNodeGroup } from './nodegroups/nodegroup';
 import { createHelmReleases } from './helmrelease/helm-release'
+import { CreateCloudwatchLogging } from './cloudwatch/cloudwatch'
 
 export function createEks() {
     eksCluster();
@@ -16,4 +17,5 @@ export function createEks() {
     ebsCsiAddon();
 
     createHelmReleases();
+    CreateCloudwatchLogging()
 }
