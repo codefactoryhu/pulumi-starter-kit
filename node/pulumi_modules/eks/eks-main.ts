@@ -19,6 +19,6 @@ export function createEks() {
     vpcCniAddon();
     ebsCsiAddon();
     
-    // iamRoleServiceAccount();
-    // createHelmReleases();
+    iamRoleServiceAccount();
+    createHelmReleases();
 }

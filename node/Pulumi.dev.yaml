@@ -131,7 +131,7 @@ config:
   aws-starter-kit:helmCharts:
     - alb:
       name: "aws-load-balancer-controller"
-      namespace: "kube-system"
+      namespace: "infra"
       repository: "https://aws.github.io/eks-charts"
       chart: "aws-load-balancer-controller"
       chartVersion: "1.5.4"

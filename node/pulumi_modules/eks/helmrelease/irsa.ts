@@ -1,8 +1,7 @@
-import * as pulumi  from "@pulumi/pulumi";
 import * as aws     from '@pulumi/aws';
-import * as k8s     from "@pulumi/kubernetes";
 
 import { createdCluster } from "../cluster/eks";
+import { createdNodeGroup } from "../nodegroups/nodegroup";
 
 export function iamRoleServiceAccount() {
     const assumeRole = aws.iam.getPolicyDocument({
@@ -286,82 +285,10 @@ export function iamRoleServiceAccount() {
         policyArn: albPolicy.arn,
     });
 
-    createClusterRole(albIngressRole)
-}
+    // const clusterNodeInstanceRoleName = createdCluster.instanceRoles.apply(roles => roles[0].name)
 
-function createClusterRole(irsa:aws.iam.Role) {
-    const k8sProvider = new k8s.Provider("k8s-provider-irsa", {
-        kubeconfig: createdCluster.kubeconfig.apply(JSON.stringify),
-    });
-
-    const clusterRole = new k8s.rbac.v1.ClusterRole("dev-pulumi-clusterrole", {
-        metadata: {
-            name: "dev-pulumi-clusterrole",
-            namespace: "kube-system"
-        },
-        rules: [
-            {
-                apiGroups: ["elbv2.k8s.aws"],
-                resources: ["targetgroupbindings"],
-                verbs: ["create", "delete", "get", "list", "patch", "update", "watch"]
-            },
-            {
-                apiGroups: ["elbv2.k8s.aws"],
-                resources: ["ingressclassparams"],
-                verbs: ["get", "list", "watch"]
-            },
-            {
-                apiGroups: [""],
-                resources: ["events"],
-                verbs: ["create", "patch"]
-            },
-            {
-                apiGroups: [""],
-                resources: ["pods"],
-                verbs: ["get", "list", "watch"]
-            },
-            {
-                apiGroups: ["networking.k8s.io"],
-                resources: ["ingressclasses"],
-                verbs: ["get", "list", "watch"]
-            },
-            {
-                apiGroups: ["", "extensions", "networking.k8s.io"],
-                resources: ["services", "ingresses"],
-                verbs: ["get", "list", "patch", "update", "watch"]
-            },
-            {
-                apiGroups: [""],
-                resources: ["ndoes", "namespaces", "endpoints"],
-                verbs: ["get", "list", "watch"]
-            },
-            {
-                apiGroups: ["", "elbv2.k8s.aws", "extensions", "networking.k8s.io"],
-                resources: ["targetgroupbindings/status", "pods/status", "services/status", "ingresses/status"],
-                verbs: ["patch", "update"]
-            },
-            {
-                apiGroups: ["discovery.k8s.io"],
-                resources: ["endpointslices"],
-                verbs: ["get", "list", "patch", "watch"]
-            }
-        ],
-    }, {provider: k8sProvider, dependsOn: createdCluster})
-
-    const clusterRoleBinding = new k8s.rbac.v1.ClusterRoleBinding("aws-load-balancer-controller-rolebinding", {
-        metadata: {
-            name: "aws-load-balancer-controller-rolebinding",
-            namespace: "kube-system"
-        },
-        subjects: [{
-            kind: "ServiceAccount",
-            name: irsa.name,
-            namespace: "kube-system"
-        }],
-        roleRef: {
-            kind: "ClusterRole",
-            name: clusterRole.metadata.name,
-            apiGroup: "rbac.authorization.k8s.io"
-        }
-    })
-}
+    // const nodeinstanceRole = new aws.iam.RolePolicyAttachment("eks-NodeInstanceRole-policy-attach", {
+    //     policyArn: albPolicy.arn,
+    //     role: clusterNodeInstanceRoleName
+    // }, {dependsOn: createdNodeGroup});
+};
