@@ -24,6 +24,7 @@ export function eksCluster() {
     const cluster = new eks.Cluster(pulumiEksCluster.name, {
         name:                           `${env}-${pulumiEksCluster.name}`,
         vpcId:                          createdVpc.id,
+        createOidcProvider:             true,
         publicSubnetIds:                publicSubnetIds,
         privateSubnetIds:               privateSubnetIds,
         encryptionConfigKeyArn:         kmsArn,
