@@ -7,7 +7,8 @@ import { helmChartType } from '../eks-interface';
 
 // import Outputs
 import { createdCluster }   from '../cluster/eks';
-import { createdNodeGroup } from '../nodegroups/nodegroup';
+import { createdAddon } from '../addons/eks-addons';
+
 
 const config                = new pulumi.Config();
 const pulumiHelmReleases    = config.requireObject<Array<helmChartType>>("helmCharts");
@@ -29,7 +30,7 @@ export function createHelmReleases() {
                 },
             }, {
                 provider: k8sProvider,
-                dependsOn: createdNodeGroup,
+                dependsOn: createdAddon,
             });
             namespaceList.push(helmRelease.namespace);
         }
@@ -42,10 +43,11 @@ export function createHelmReleases() {
             namespace:  helmRelease.namespace,
             values:     helmRelease.values,
           
+            atomic: true,
             skipAwait: false,
         }, {
             provider:   createdCluster.provider,
-            dependsOn:  createdNodeGroup,
+            dependsOn:  createdAddon,
         });
     }
 }

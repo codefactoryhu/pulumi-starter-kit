@@ -6,9 +6,10 @@
         "@types/node": "^16"
     },
     "dependencies": {
-        "@pulumi/pulumi": "^3.0.0",
         "@pulumi/aws": "^6.7.0",
+        "@pulumi/aws-iam": "^0.2.0",
         "@pulumi/awsx": "2.3.0",
-        "@pulumi/eks": "2.0.0"
+        "@pulumi/eks": "2.0.0",
+        "@pulumi/pulumi": "^3.0.0"
     }
 }

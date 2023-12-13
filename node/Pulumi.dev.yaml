@@ -137,3 +137,22 @@ config:
       chartVersion: "1.5.4"
       values:
         clusterName: "dev-pulumi-cluster"
+  aws-starter-kit:cloudwatch:
+    name: aws-for-fluent-bit
+    namespace: cloudwatch
+    repository: https://aws.github.io/eks-charts
+    chart: aws-for-fluent-bit
+    chartVersion: "0.1.28"
+    values: 
+      serviceAccount:
+            create: false
+      cloudWatchLogs:
+            region: "eu-west-2"
+            logRetentionDays: 1
+
+
+
+
+
+ 
+  
