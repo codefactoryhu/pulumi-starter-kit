@@ -127,11 +127,11 @@ config:
       forceDelete: true
       imageTagMutability: 'MUTABLE'
 
-  # Helm charts
+   # Helm charts
   aws-starter-kit:helmCharts:
     - reloader:
       name: "reloader"
-      namespace: "infra"
+      namespace: "reloader"
       repository: "https://stakater.github.io/stakater-charts"
       chart: "reloader"
       chartVersion: "1.0.24"
@@ -144,7 +144,7 @@ config:
     #   name: "nats"
     #   repository: "https://nats-io.github.io/k8s/helm/charts/"
     #   chart: "nats"
-    #   chartVersion: "0.19.16"
+    #   chart_version: "0.19.16"
     #   namespace: "infra"
 
   aws-starter-kit:cloudwatch:
@@ -155,12 +155,24 @@ config:
     chartVersion: "0.1.28"
     values: 
       serviceAccount:
-            create: false
+          create: false
       cloudWatchLogs:
             region: "eu-west-2"
             logRetentionDays: 1
 
-
+  aws-starter-kit:alb:
+    name: "aws-load-balancer-controller"
+    namespace: "infra"
+    repository: "https://aws.github.io/eks-charts"
+    chart: "aws-load-balancer-controller"
+    chartVersion: "1.5.4"
+    values:
+      clusterName: "dev-pulumi-cluster"
+      serviceAccount:
+        create: false
+        name: aws-load-balancer-controller 
+    
+   
 
 
 

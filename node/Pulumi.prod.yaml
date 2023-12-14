@@ -129,7 +129,7 @@ config:
   aws-starter-kit:helmCharts:
     - reloader:
       name: "reloader"
-      namespace: "infra"
+      namespace: "reloader"
       repository: "https://stakater.github.io/stakater-charts"
       chart: "reloader"
       chartVersion: "1.0.24"
@@ -157,5 +157,18 @@ config:
       cloudWatchLogs:
             region: "eu-west-2"
             logRetentionDays: 1
+
+  aws-starter-kit:alb:
+    name: "aws-load-balancer-controller"
+    namespace: "infra"
+    repository: "https://aws.github.io/eks-charts"
+    chart: "aws-load-balancer-controller"
+    chartVersion: "1.5.4"
+    values:
+      clusterName: "prod-pulumi-cluster"
+      serviceAccount:
+        create: false
+        name: aws-load-balancer-controller 
+    
    
 

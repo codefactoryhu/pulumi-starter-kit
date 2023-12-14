@@ -17,7 +17,7 @@ export function createAuthConfig() {
     });
     
     // Read the existing aws-auth ConfigMap
-    const awsAuthConfigMap = k8s.core.v1.ConfigMap.get("aws-auth-configmap", "kube-system/aws-auth", { provider: k8sProvider });
+    const awsAuthConfigMap = k8s.core.v1.ConfigMap.get("aws-auth-configmap", "kube-system/aws-auth", { provider: k8sProvider, dependsOn: createdCluster });
     
     // Update the aws-auth ConfigMap with the additional IAM user mappings
     const updatedAwsAuthConfigMap = new k8s.core.v1.ConfigMap("aws-auth", {
