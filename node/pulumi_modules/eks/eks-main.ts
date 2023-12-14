@@ -4,6 +4,7 @@ import { vpcCniAddon, coreDnsAddon, kubeProxyAddon, ebsCsiAddon,  } from './addo
 import { createNodeGroup } from './nodegroups/nodegroup';
 import { createHelmReleases } from './helmrelease/helm-release'
 import { CreateCloudwatchLogging } from './cloudwatch/cloudwatch'
+import { CreateAlb } from './alb/alb'
 
 export function createEks() {
     eksCluster();
@@ -16,6 +17,8 @@ export function createEks() {
     vpcCniAddon();
     ebsCsiAddon();
 
-    createHelmReleases();
+    //createHelmReleases();
     CreateCloudwatchLogging()
+    CreateAlb()
+
 }
