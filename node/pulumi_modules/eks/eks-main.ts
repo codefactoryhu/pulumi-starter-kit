@@ -8,7 +8,7 @@ import { CreateCloudwatchLogging } from './cloudwatch/cloudwatch'
 
 export function createEks() {
     eksCluster();
-    createAuthConfig();
+    // createAuthConfig();
     createNodeGroup();
     
     // eks addons

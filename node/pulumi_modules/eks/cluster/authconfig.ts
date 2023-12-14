@@ -6,7 +6,6 @@ import { eksClusterType } from '../eks-interface';
 
 // import Outputs
 import { createdCluster } from '../cluster/eks';
-import { createdNodeGroup } from '../nodegroups/nodegroup';
 
 const config                = new pulumi.Config();
 const pulumiEksCluster      = config.requireObject<eksClusterType>("eksCluster");
@@ -35,5 +34,5 @@ export function createAuthConfig() {
                 groups: ["system:masters"],
             }))),
         })),
-    }, { provider: k8sProvider, dependsOn: [awsAuthConfigMap, createdNodeGroup] });
+    }, { provider: k8sProvider, dependsOn: [awsAuthConfigMap] });
 }
