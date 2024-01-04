@@ -22,8 +22,6 @@ export function kms() {
         description:            pulumikmsKey.description,
         tags: {
             "Name"   : `${env}-${pulumikmsKey.name}`, 
-            "Env"    : env,
-            "Project": project
         },
     })
     kmsArn = kmsKey.arn;

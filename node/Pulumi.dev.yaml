@@ -2,10 +2,17 @@ config:
   # Global
   aws-starter-kit:project: aws-starter-kit
   aws-starter-kit:env: dev
+  aws-starter-kit:version: 1.0
   aws-starter-kit:availabilityZone:
     - eu-west-2a
     - eu-west-2b
     - eu-west-2c
+
+   aws:defaultTags:
+    tags:
+      project: aws-starter-kit
+      env: dev
+      version: "v1.0.0"
 
   # VPC
   aws-starter-kit:vpc:

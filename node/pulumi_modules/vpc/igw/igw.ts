@@ -22,8 +22,6 @@ export function internetGateway() {
         vpcId:  createdVpc.id,
         tags: {
             "Name"   : `${env}-${pulumiInternetGateway.name}`, 
-            "Env"    : env,
-            "Project": project
         },
     });
     createdInternetGateway = igw;
@@ -42,8 +40,7 @@ function publicRouteTable() {
         ],
         tags: {
             "Name"   : `${env}-${pulumiRouteTable.name}`, 
-            "Env"    : env,
-            "Project": project},
+        },
     })
     associateRouteTable(routeTable);
 }

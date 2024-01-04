@@ -17,8 +17,7 @@ export function elasticIp() {
         domain: "vpc",
         tags: {
             "Name": `${env}-${pulumiElasticIp.name}`, 
-            "Env": env,
-            "Project": project}
+        }
     })
     eipAllocationId = eip.allocationId;
 }
