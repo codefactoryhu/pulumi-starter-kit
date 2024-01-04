@@ -7,7 +7,7 @@ config:
     - eu-west-2b
     - eu-west-2c
 
-   aws:defaultTags:
+  aws:defaultTags:
     tags:
       project: aws-starter-kit
       env: dev
