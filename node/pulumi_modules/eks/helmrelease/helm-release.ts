@@ -20,7 +20,7 @@ export function createHelmReleases() {
     });
 
     let namespaceList: string[];
-    namespaceList = [];
+    namespaceList = ["kube-system", "kube-public", "kube-node-lease" ,"default" ];
 
     for (let helmRelease of pulumiHelmReleases) {
         if (!namespaceList.includes(helmRelease.namespace)) {
