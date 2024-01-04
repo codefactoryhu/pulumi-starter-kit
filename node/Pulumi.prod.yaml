@@ -10,7 +10,7 @@ config:
   aws:defaultTags:
     tags:
       project: aws-starter-kit
-      env: dev
+      env: prod
       version: "v1.0.0"
 
   # VPC
