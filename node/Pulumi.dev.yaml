@@ -7,6 +7,12 @@ config:
     - eu-west-2b
     - eu-west-2c
 
+  aws:defaultTags:
+    tags:
+      project: aws-starter-kit
+      env: dev
+      version: "v1.0.0"
+
   # VPC
   aws-starter-kit:vpc:
     name: pulumi-vpc

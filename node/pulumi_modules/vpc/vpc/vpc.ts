@@ -20,8 +20,7 @@ export function vpc() {
         enableDnsHostnames: pulumiVpc.enableDnsHostnames,
         tags: {
             "Name": `${env}-${pulumiVpc.name}` , 
-            "Env": env,
-            "Project": project},
+        },
     });
     createdVpc = vpc;
 }

@@ -23,8 +23,6 @@ export function natGateway() {
         connectivityType:   pulumiNatGateway.connectivityType,
         tags: {
             "Name"   : `${env}-${pulumiNatGateway.name}`, 
-            "Env"    : env,
-            "Project": project
         },
     });
     privateRouteTable(natGw)
@@ -42,8 +40,6 @@ function privateRouteTable(natGw:aws.ec2.NatGateway) {
         ],
         tags: {
             "Name"   : `${env}-${pulumiRouteTable.name}`, 
-            "Env"    : env,
-            "Project": project
         },
     })
     associateRouteTable(routeTable);

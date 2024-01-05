@@ -19,10 +19,7 @@ export function createEcrRepository() {
             name: `${env}-${pulumiEcr.name}`,
             forceDelete: pulumiEcr.forceDelete,
             imageTagMutability: pulumiEcr.imageTagMutability,
-            tags: {
-                "Env":     env,
-                "Project": project,
-            }});
+            });
 
         const lifeCyclePolicy =  new aws.ecr.LifecyclePolicy(`${pulumiEcr.name}-policy`, {
             repository: repository.name,

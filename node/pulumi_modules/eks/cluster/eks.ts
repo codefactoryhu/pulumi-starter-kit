@@ -35,9 +35,8 @@ export function eksCluster() {
         minSize: pulumiEksCluster.managedNodeGroupMinSize,
         maxSize: pulumiEksCluster.managedNodeGroupMaxSize,
         tags: {
-              "Name"   : `${env}-${pulumiEksCluster.name}`, 
-              "Env"    : env, 
-              "Project": project},
+            "Name"   : `${env}-${pulumiEksCluster.name}`, 
+        },
     })
     createdCluster = cluster;
 }

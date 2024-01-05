@@ -29,8 +29,6 @@ export function publicSubnet() {
             mapPublicIpOnLaunch:    pulumiPublicSubnet.mapPublicIpOnLaunch,
             tags: {
                 "Name": `${env}-${pulumiPublicSubnet.name}` , 
-                "Env": env,
-                "Project": project,
             },
         });
         publicSubnetIds.push(publicSubnet.id);
@@ -46,8 +44,7 @@ export function privateSubnet() {
             mapPublicIpOnLaunch:    pulumiPublicSubnet.mapPublicIpOnLaunch,
             tags: {
                 "Name"   : `${env}-${pulumiPrivateSubnet.name}`, 
-                "Env"    : env,
-                "Project": project},
+           },
         });
         privateSubnetIds.push(publicSubnet.id);
     }

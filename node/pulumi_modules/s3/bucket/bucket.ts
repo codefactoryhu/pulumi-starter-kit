@@ -19,8 +19,6 @@ export function createBuckets() {
             },
             tags: {
                 "Name"   : `${env}-${pulumiBucket.name}`, 
-                "Env"    : env, 
-                "Project": project
             },
         });
     }

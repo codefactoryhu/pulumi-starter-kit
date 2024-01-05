@@ -26,27 +26,21 @@ export function createVpc() {
                 cidrMask: 24,
                 name: "private-subnet",
                 tags: {
-                    "Name"   : `${env}-pulumi-private-subnet`, 
-                    "Env"    : env,
-                    "Project": project}
+                    "Name"   : `${env}-pulumi-private-subnet`, }
             },
             {
                 type: awsx.ec2.SubnetType.Public,
                 cidrMask: 24,
                 name: "public subnet",
                 tags: {
-                    "Name"   : `${env}-pulumi-public-subnet`,
-                    "Env"    : env, 
-                    "Project": project}
+                    "Name"   : `${env}-pulumi-public-subnet`, }
             }
         ],
         natGateways: {
             strategy: awsx.ec2.NatGatewayStrategy.Single,
         },
         tags: {
-            "Name"   : `${env}-${pulumiVpc.name}`, 
-            "Env"    : env,
-            "Project": project},
+            "Name"   : `${env}-${pulumiVpc.name}`, },
     });
     createdVpc = vpc;
 }

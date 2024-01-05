@@ -18,10 +18,6 @@ export function vpcFlowLogs() {
         
         const vpcLogGroup = new aws.cloudwatch.LogGroup(`${pulumiVpc.name}-log-group`, {
             name: `${env}-${pulumiVpc.name}-log-group`,
-            tags: {
-                "Env"    : env,
-                "Project": project,
-            }
         });
 
         const assumeRole = aws.iam.getPolicyDocument({
@@ -37,10 +33,6 @@ export function vpcFlowLogs() {
 
         const vpcLogRole = new aws.iam.Role(`${pulumiVpc.name}-role`, {
             name: `${env}-${pulumiVpc.name}-role`,
-            tags: {
-                "Env"    : env,
-                "Project": project,
-            },
             assumeRolePolicy: assumeRole.then(assumeRole => assumeRole.json)});
         
         const vpcFlowLog = new aws.ec2.FlowLog(`${env}-${pulumiVpc.name}-flowlog`, {

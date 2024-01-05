@@ -26,10 +26,7 @@ export function createEcrRepository() {
                     tagStatus: "untagged"
                 }],
             },
-            tags: {
-                "Env":     env,
-                "Project": project,
-            }});
+            });
             
 
        

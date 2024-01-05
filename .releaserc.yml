@@ -1,6 +1,23 @@
 plugins:
   - "@semantic-release/commit-analyzer"
   - "@semantic-release/release-notes-generator"
-  - "@semantic-release/github"
+  - - "@semantic-release/exec"
+    - prepareCmd: |
+        sed -i "s/version: \".*\"/version: \"v${nextRelease.version}\"/" ./node/Pulumi.dev.yaml
+        sed -i "s/version: \".*\"/version: \"v${nextRelease.version}\"/" ./node/Pulumi.prod.yaml
+      generateNotesCmd: |
+        git log --format='%B%n===' $(git describe --tags --abbrev=0)..HEAD | head -n -1 | conventional-commits-parser '===' | yq e '.[] | select(.subject == "ReleaseOf*")' -j - | jq -r '. | .subject as $subj  | .body |= sub("(?<a>## \\[)[0-9]+.[0-9]+.[0-9]+(?<b>\\].*)"; "\(.a)"+$subj+"\(.b)") | .body' | sed 's/ReleaseOf //g' | sed 's/##/###/g'
+
+  - "@semantic-release/changelog"
+  - - "@semantic-release/git"
+    - assets:
+        - ./node/Pulumi.dev.yaml
+        - ./node/Pulumi.prod.yaml
+      message: |
+        chore(release): version ${nextRelease.version} [skip ci]
+
+        ${nextRelease.notes}
+  - - "@semantic-release/github"
+    - githubUrl: https://api.github.com
 branches:
   - "main"
