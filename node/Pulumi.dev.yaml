@@ -11,7 +11,7 @@ config:
     tags:
       project: aws-starter-kit
       env: dev
-      version: "v1.2.25"
+      version: "v1.2.26"
 
   # VPC
   aws-starter-kit:vpc:
@@ -150,7 +150,7 @@ config:
     #   name: "nats"
     #   repository: "https://nats-io.github.io/k8s/helm/charts/"
     #   chart: "nats"
-    #   chart_version: "v1.2.25"
+    #   chart_version: "v1.2.26"
     #   namespace: "infra"
 
   aws-starter-kit:cloudwatch:
